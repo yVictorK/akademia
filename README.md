@@ -1,1 +1,1 @@
-# akad-mia
+# akademia
