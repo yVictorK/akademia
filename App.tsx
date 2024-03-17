@@ -29,7 +29,6 @@ export default function App() {
       <AppProvider id='bd_akademia-xsxws'>
         <UserProvider fallback={AuthRoutes}>
           <RealmProvider
-   
             sync={{
               flexible: true,
             }}
