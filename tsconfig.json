@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "jsx": "react-native",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "moduleResolution": "node",
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "paths": {
+      "*": [
+        "./src/*"
+      ]
+    }
+  },
+  "exclude": ["babel.config.js"],
+  "extends": "expo/tsconfig.base",
+  
+}
