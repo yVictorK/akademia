@@ -17,9 +17,9 @@ export default function App() {
   
     const loadFonts = async () => {
       await Font.loadAsync({
-        'Nexa-Heavy': require('../assets/fonts/Nexa/Nexa-Heavy.ttf'),
-        'Poppins-Medium': require('../assets/fonts/Poppins/Poppins-Medium.ttf'),
-        'Poppins-SemiBold': require('../assets/fonts/Poppins/Poppins-SemiBold.ttf'),
+        'Nexa-Heavy': require('./src/assets/fonts/Nexa/Nexa-Heavy.ttf'),
+        'Poppins-Medium': require('./src/assets/fonts/Poppins/Poppins-Medium.ttf'),
+        'Poppins-SemiBold': require('./src/assets/fonts/Poppins/Poppins-SemiBold.ttf'),
   
       });
       setFontsLoaded(true);
