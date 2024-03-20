@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import primaryTheme from './src/themes/default';
 import { AppRoutes } from './src/routes';
-import useLoadFonts from './src/hooks/useLoadFonts';
 import { AppProvider, RealmProvider, UserProvider } from '@realm/react';
 import { AuthRoutes } from './src/routes/auth.routes';
 import { SplashScreen } from './src/components/SplashScreen';
