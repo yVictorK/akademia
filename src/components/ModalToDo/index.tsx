@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
-import { newActivity } from "../../schema/toDoListSchema";
-import { useUser } from '@realm/react'; 
+import { newActivity} from "../../schema/toDoListSchema";
+import { useUser } from '@realm/react';
 
 const Realm = require("realm");
 
@@ -17,11 +17,18 @@ export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
     const user = useUser();
     const addActivity = () => {
         realm.write(() => {
-            realm.delete(newActivity);
+          const newActivity = realm.create('Activity', {
+            _id: Math.random().toString(),
+            name: newActivityName,
+            userId: user.id,
+          });
         });
         setModalVisible(false);
         setNewActivityName('');
-    };
+      };
+
+
+
 
     return (
         <Modal visible={modalVisible} animationType="slide" transparent={true}>
