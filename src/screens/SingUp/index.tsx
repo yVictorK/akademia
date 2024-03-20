@@ -25,7 +25,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { user, userSchema } from "../../schema/signUpSchema";
+import { user, userSchema } from "./signUpSchema";
 
 
 export function SignUp() {

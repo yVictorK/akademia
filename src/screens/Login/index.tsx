@@ -9,7 +9,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { NavigationProps } from "../../types/navigation";
 import theme from '../../themes/default'
 import { useForm } from "react-hook-form";
-import { user, userSchema } from "../../schema/signISchema";
+import { user, userSchema } from "./signISchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert } from "react-native";
 
