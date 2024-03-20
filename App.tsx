@@ -6,11 +6,31 @@ import useLoadFonts from './src/hooks/useLoadFonts';
 import { AppProvider, RealmProvider, UserProvider } from '@realm/react';
 import { AuthRoutes } from './src/routes/auth.routes';
 import { SplashScreen } from './src/components/SplashScreen';
+import * as Font from 'expo-font';
 
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const fontsLoaded = useLoadFonts();
+
+  const useLoadFonts = () => {
+    const [fontsLoaded, setFontsLoaded] = useState(false);
+  
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Nexa-Heavy': require('../assets/fonts/Nexa/Nexa-Heavy.ttf'),
+        'Poppins-Medium': require('../assets/fonts/Poppins/Poppins-Medium.ttf'),
+        'Poppins-SemiBold': require('../assets/fonts/Poppins/Poppins-SemiBold.ttf'),
+  
+      });
+      setFontsLoaded(true);
+    }
+  
+    useEffect(() => {
+      loadFonts();
+    }, []);
+  
+    return fontsLoaded; 
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -20,7 +40,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (!fontsLoaded || isLoading) {
+  if (!useLoadFonts || isLoading) {
     return <SplashScreen />;
   }
 
