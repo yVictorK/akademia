@@ -31,7 +31,12 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font"
+      [
+        "expo-font"
+        {
+          "fonts": ["./src/assets/fonts/Nexa/Nexa-Heavy.ttf", "./src/assets/fonts/Poppins/Poppins-Medium.ttf"]
+        }
+      ]
     ],
     "extra": {
       "eas": {
