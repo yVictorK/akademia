@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 import React, { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import primaryTheme from './src/themes/default';
@@ -7,9 +8,9 @@ import { AuthRoutes } from './src/routes/auth.routes';
 import { SplashScreen } from './src/components/SplashScreen';
 import * as Font from 'expo-font';
 import { realmContext } from './src/models/RealmContext';
-import 'react-native-get-random-values';
 
-const {RealmProvider} = realmContext;
+
+const { RealmProvider } = realmContext;
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
