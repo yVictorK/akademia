@@ -1,33 +1,20 @@
 import { FlatList, Button } from 'react-native';
 import { HeaderContainer, MainContainer, TextToDoList } from "./styles";
 import { BackButton } from "../../components/BackButton";
-import { newActivity } from '../../schema/toDoListSchema';
+import { Activity } from '../../models/toDoListSchema';
 import { ToDoListBox } from '../../components/ToDoListBox';
 import { ModalToDO } from '../../components/ModalToDo';
 import { useEffect, useState } from 'react';
+import { realmContext } from "../../models/RealmContext";
+import { useUser } from '@realm/react';
 
-
-let realm = new Realm({ schema: [newActivity] });
+const { useQuery, useRealm } = realmContext;
 
 export function ToDoList() {
+  const realm = useRealm();
+  const user = useUser();
   const [modalVisible, setModalVisible] = useState(false);
-  const [activitiess, setActivities] = useState<newActivity[]>([]);
-
-  useEffect(() => {
-    function updateActivities() {
-      const activities = realm.objects<newActivity>('Activity');
-      setActivities(Array.from(activities));
-    }
-
-    updateActivities();
-
-    const activities = realm.objects<newActivity>('Activity');
-    activities.addListener(updateActivities);
-
-    return () => {
-      activities.removeListener(updateActivities);
-    };
-  }, []);
+  const userActivitys = realm.objects(Activity).filtered(`userId == "${user?.id}"`);
 
   return (
     <MainContainer>
@@ -37,12 +24,12 @@ export function ToDoList() {
       <TextToDoList>Lista de Afazeres</TextToDoList>
       <Button title="Adicionar nova atividade" onPress={() => setModalVisible(true)} />
       <FlatList
-      style={{
-        height: 'auto',
-      }}
-        data={activitiess}
-        keyExtractor={(item: newActivity) => item.name}
-        renderItem={({ item }: { item: newActivity }) => <ToDoListBox props={item.name} />}
+        style={{
+          height: 'auto',
+        }}
+        data={userActivitys}
+        keyExtractor={(item: Activity) => item._id.toString()}
+        renderItem={({ item }: { item: Activity }) => <ToDoListBox props={item.name} />}
       />
       <ModalToDO modalVisible={modalVisible} setModalVisible={setModalVisible} />
 

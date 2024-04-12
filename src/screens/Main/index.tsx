@@ -14,8 +14,8 @@ export function MainScreen() {
             <ContainerActivityView>
                 <ContainerActivityText>O que deseja fazer agora?</ContainerActivityText>
                 <ViewActitivitys>
-                    <PressableContainer 
-                    onPress={() => navigation.navigate('ToDoList')}
+                    <PressableContainer
+                        onPress={() => navigation.navigate('ToDoList')}
                     >
                         <ImageContainer
                             source={require('../../assets/images/atividades.png')}

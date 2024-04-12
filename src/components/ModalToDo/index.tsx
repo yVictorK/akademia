@@ -1,41 +1,55 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
-import { newActivity} from "../../schema/toDoListSchema";
-import { useUser } from '@realm/react';
-
-const Realm = require("realm");
-
-let realm = new Realm({ schema: [newActivity] });
+import { Activity } from "../../models/toDoListSchema";
+import { useUser } from "@realm/react";
+import { realmContext } from "../../models/RealmContext";
 
 interface ModalProps {
     modalVisible: boolean;
     setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const { useRealm } = realmContext;
+
 export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
-    const [newActivityName, setNewActivityName] = useState('');
+
+    const realm = useRealm();
     const user = useUser();
-    const addActivity = () => {
-        realm.write(() => {
-          const newActivity = realm.create('Activity', {
-            _id: Math.random().toString(),
-            name: newActivityName,
-            userId: user.id,
-          });
+
+    const [ActivityName, setActivityName] = useState('');
+
+    const addActivity = useCallback(() => {
+        const activity = realm.write(() => {
+            return new Activity(realm, {
+                name: ActivityName,
+                userId: user?.id,
+            });
         });
+        console.log("criado ", activity);
         setModalVisible(false);
-        setNewActivityName('');
-      };
+        setActivityName('');
+    }, [realm, user, ActivityName],
+    );
 
-
-
+    useEffect(() => {
+        realm.subscriptions.update(mutableSubs => {
+            mutableSubs.add(realm.objects(Activity));
+        });
+    }, [realm]);
 
     return (
         <Modal visible={modalVisible} animationType="slide" transparent={true}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <Text>Adicionar uma nova atividade</Text>
-                    <TextInput value={newActivityName} onChangeText={setNewActivityName} />
+                    <TextInput
+                        value={ActivityName}
+                        onChangeText={(text) => {
+                            console.log(text);
+                            setActivityName(text);
+
+                        }}
+                    />
                     <View style={styles.buttonContainer}>
                         <Button title="Cancelar" onPress={() => setModalVisible(false)} />
                         <Button title="Confirmar" onPress={addActivity} />

@@ -30,17 +30,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./src/assets/fonts/Nexa/Nexa-Heavy.ttf",
-            "./src/assets/fonts/Poppins/Poppins-Medium.ttf"
-          ]
-        }
-      ]
-    ],
     "extra": {
       "eas": {
         "projectId": "98636026-a453-4b3f-8437-1f2ac785e1a9"
