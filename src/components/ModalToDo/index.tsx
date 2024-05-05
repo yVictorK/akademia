@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
+import {Modal } from "react-native";
 import { Activity } from "../../models/toDoListSchema";
 import { useUser } from "@realm/react";
 import { realmContext } from "../../models/RealmContext";
+import { AddButton, ButtonsView, CancelButton, CenteredView, ModalView, TextButtons, TextInputModal, TextModal } from "./styles";
 
 interface ModalProps {
     modalVisible: boolean;
     setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const { useRealm,useQuery } = realmContext;
+const { useRealm, useQuery } = realmContext;
 
 export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
 
@@ -41,52 +42,36 @@ export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
 
     return (
         <Modal visible={modalVisible} animationType="slide" transparent={true}>
-            <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                    <Text>Adicionar uma nova atividade</Text>
-                    <TextInput
+            <CenteredView>
+                <ModalView style={{
+                    shadowColor: "#fff",
+                    shadowOffset: {
+                        width: 0,
+                        height: 2
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    elevation: 5,
+                }}>
+                    <TextModal>Adicionar uma nova atividade</TextModal>
+                    <TextInputModal
                         value={ActivityName}
                         onChangeText={(text) => {
                             setActivityName(text);
                         }}
-                    />
-                    <View style={styles.buttonContainer}>
-                        <Button title="Cancelar" onPress={() => setModalVisible(false)} />
-                        <Button title="Confirmar" onPress={addActivity} />
-                    </View>
-                </View>
-            </View>
+                        placeholder="Digite o nome da atividade"
+                        placeholderTextColor={"#B0B0B0"}
+                    ></TextInputModal>
+                    <ButtonsView>
+                        <CancelButton onPress={() => setModalVisible(false)}>
+                            <TextButtons>Cancelar</TextButtons>
+                        </CancelButton>
+                        <AddButton onPress={addActivity}>
+                            <TextButtons>Confirmar</TextButtons>
+                        </AddButton>
+                    </ButtonsView>
+                </ModalView>
+            </CenteredView>
         </Modal>
     );
 }
-
-const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        width: '70%',
-        maxHeight: 300
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-    }
-});

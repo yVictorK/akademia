@@ -11,6 +11,7 @@ export default {
         tabBar: '#3A3D5C',
         toDoListCheckBox: '#937B9A',
         buttonsCreate: '#1CBD79',
+        lightGrey: '#B0B0B0',
     },
     FONTSIZES: {
         big: '36px',

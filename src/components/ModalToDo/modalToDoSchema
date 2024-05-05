@@ -1,0 +1,8 @@
+import { z } from 'zod';
+
+export const ModalSchema = z.object({
+    texto: z.string()
+        .min(1, 'Preencha os campos')
+});
+
+export type user = z.infer<typeof ModalSchema>;
