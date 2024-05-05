@@ -47,7 +47,6 @@ export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
                     <TextInput
                         value={ActivityName}
                         onChangeText={(text) => {
-                            console.log(text);
                             setActivityName(text);
                         }}
                     />

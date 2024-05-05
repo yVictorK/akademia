@@ -1,4 +1,5 @@
 import 'react-native-get-random-values';
+import Realm from 'realm'
 import { v4 as uuidv4 } from "uuid";
 import { registerRootComponent } from 'expo';
 

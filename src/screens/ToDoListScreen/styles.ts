@@ -28,6 +28,7 @@ export const ButtonAddActivity = styled.TouchableOpacity`
   border-radius: 15px;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
 `;
 
 export const TextAddActivity = styled.Text`
@@ -40,5 +41,6 @@ export const ListView = styled.View`
   width: 100%;
   height: auto;
   padding: 20px 0px;
-  margin-bottom: 300px;
+  margin-bottom: 330px;
+  border-radius: 15px;
 `;

@@ -1,7 +1,7 @@
-import Realm, { BSON } from "realm";
+import Realm from "realm";
 
 export class Activity extends Realm.Object<Activity> {
-  _id!: BSON.ObjectId;
+  _id!: Realm.BSON.ObjectId;
   name!: string;
   userId!: string;
 
@@ -9,7 +9,7 @@ export class Activity extends Realm.Object<Activity> {
     name: 'Activity',
     primaryKey: '_id',
     properties: {
-      _id: { type: 'objectId', default: () => new BSON.ObjectId() },
+      _id: { type: 'objectId', default: () => new Realm.BSON.ObjectId() },
       name: 'string',
       userId: 'string',
     },
