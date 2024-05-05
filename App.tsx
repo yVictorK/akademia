@@ -1,4 +1,3 @@
-import 'react-native-get-random-values';
 import React, { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import primaryTheme from './src/themes/default';

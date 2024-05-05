@@ -1,5 +1,4 @@
 import Realm, { BSON } from "realm";
-import 'react-native-get-random-values';
 
 export class Activity extends Realm.Object<Activity> {
   _id!: BSON.ObjectId;
@@ -10,7 +9,7 @@ export class Activity extends Realm.Object<Activity> {
     name: 'Activity',
     primaryKey: '_id',
     properties: {
-      _id: { type: 'objectId', default: () => new BSON.ObjectId()},
+      _id: { type: 'objectId', default: () => new BSON.ObjectId() },
       name: 'string',
       userId: 'string',
     },

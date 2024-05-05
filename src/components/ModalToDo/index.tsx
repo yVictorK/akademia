@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
 import { Activity } from "../../models/toDoListSchema";
-import { useUser } from "@realm/react";
+import { useQuery, useUser } from "@realm/react";
 import { realmContext } from "../../models/RealmContext";
 
 interface ModalProps {
@@ -15,13 +15,15 @@ export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
 
     const realm = useRealm();
     const user = useUser();
+    const activityQuery = useQuery(Activity);
 
     const [ActivityName, setActivityName] = useState('');
 
     const addActivity = useCallback(() => {
+        const currentActivityName = ActivityName;
         const activity = realm.write(() => {
             return new Activity(realm, {
-                name: ActivityName,
+                name: currentActivityName,
                 userId: user?.id,
             });
         });
@@ -47,7 +49,6 @@ export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
                         onChangeText={(text) => {
                             console.log(text);
                             setActivityName(text);
-
                         }}
                     />
                     <View style={styles.buttonContainer}>
