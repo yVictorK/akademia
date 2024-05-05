@@ -40,4 +40,5 @@ export const ListView = styled.View`
   width: 100%;
   height: auto;
   padding: 20px 0px;
+  margin-bottom: 300px;
 `;

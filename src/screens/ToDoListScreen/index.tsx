@@ -24,15 +24,12 @@ export function ToDoList() {
           keyExtractor={(item: Activity) => item._id.toString()}
           renderItem={({ item }: { item: Activity }) => <ToDoListBox props={item.name} />}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            height: 'auto',
-          }}
           numColumns={1}
         />
+        <ButtonAddActivity onPress={() => setModalVisible(true)}>
+          <TextAddActivity>Adicionar atividade</TextAddActivity>
+        </ButtonAddActivity>
       </ListView>
-      <ButtonAddActivity onPress={() => setModalVisible(true)}>
-        <TextAddActivity>Adicionar atividade</TextAddActivity>
-      </ButtonAddActivity>
       <ModalToDO modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </MainContainer>
   );

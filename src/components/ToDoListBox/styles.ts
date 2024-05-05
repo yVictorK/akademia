@@ -8,6 +8,7 @@ export const BoxContainer = styled.View`
     gap: 30px;
     align-items: center;
     background-color: ${({theme}) => theme.COLORS.inputBackground};
+    margin-bottom: 15px;
 `;
 
 export const TextBox = styled.Text`
