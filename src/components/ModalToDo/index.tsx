@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
 import { Activity } from "../../models/toDoListSchema";
-import { useQuery, useUser } from "@realm/react";
+import { useUser } from "@realm/react";
 import { realmContext } from "../../models/RealmContext";
 
 interface ModalProps {
@@ -9,7 +9,7 @@ interface ModalProps {
     setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const { useRealm } = realmContext;
+const { useRealm,useQuery } = realmContext;
 
 export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
 

@@ -2,9 +2,12 @@ import styled from "styled-components/native";
 
 export const BoxContainer = styled.View`
     width: 100%;
-    border-radius: 30px;
+    border-radius: 15px;
     padding: 15px;
-    background-color: ${({theme}) => theme.COLORS.checkBoxBackground};
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+    background-color: ${({theme}) => theme.COLORS.inputBackground};
 `;
 
 export const TextBox = styled.Text`

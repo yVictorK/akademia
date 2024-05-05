@@ -1,5 +1,5 @@
 import { FlatList, Button } from 'react-native';
-import { HeaderContainer, MainContainer, TextToDoList } from "./styles";
+import { ButtonAddActivity, HeaderContainer, MainContainer, TextAddActivity, TextToDoList } from "./styles";
 import { BackButton } from "../../components/BackButton";
 import { Activity } from '../../models/toDoListSchema';
 import { ToDoListBox } from '../../components/ToDoListBox';
@@ -22,17 +22,18 @@ export function ToDoList() {
         <BackButton />
       </HeaderContainer>
       <TextToDoList>Lista de Afazeres</TextToDoList>
-      <Button title="Adicionar nova atividade" onPress={() => setModalVisible(true)} />
       <FlatList
         style={{
-          height: 'auto',
+          height: 150,
         }}
         data={userActivitys}
         keyExtractor={(item: Activity) => item._id.toString()}
         renderItem={({ item }: { item: Activity }) => <ToDoListBox props={item.name} />}
       />
       <ModalToDO modalVisible={modalVisible} setModalVisible={setModalVisible} />
-
+      <ButtonAddActivity onPress={() => setModalVisible(true)}>
+        <TextAddActivity>Adicionar atividade</TextAddActivity>
+      </ButtonAddActivity>
     </MainContainer>
   );
 }

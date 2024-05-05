@@ -17,7 +17,9 @@ const CheckBoxToDoList: React.FC<CheckBoxProps> = ({ isChecked, onCheck }) => {
 
   return (
     <TouchableOpacity onPress={handleCheck}>
-      <CheckBoxContainer>
+      <CheckBoxContainer style={{
+        opacity: checked? 0.8 : 0.4,
+      }}>
         {checked && <Checked width={30} height={30} />}
       </CheckBoxContainer>
     </TouchableOpacity>
