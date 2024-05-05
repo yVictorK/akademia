@@ -18,6 +18,7 @@ export const TextToDoList = styled.Text`
   color: ${({ theme }) => theme.COLORS.text_primary};
   margin-top: 30px;
   margin-bottom: 30px;
+  margin-top: 60px;
 `;
 
 export const ButtonAddActivity = styled.TouchableOpacity`
@@ -33,4 +34,10 @@ export const TextAddActivity = styled.Text`
   font-size: ${({ theme }) => theme.FONTSIZES.larger};
   font-family: ${({ theme }) => theme.FONTS.textButtons};
   color: ${({ theme }) => theme.COLORS.text_primary};
+`;
+
+export const ListView = styled.View`
+  width: 100%;
+  height: auto;
+  padding: 20px 0px;
 `;

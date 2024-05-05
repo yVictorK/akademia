@@ -1,6 +1,5 @@
-import { FlatList, Button } from 'react-native';
-import { ButtonAddActivity, HeaderContainer, MainContainer, TextAddActivity, TextToDoList } from "./styles";
-import { BackButton } from "../../components/BackButton";
+import { FlatList } from 'react-native';
+import { ButtonAddActivity, HeaderContainer, ListView, MainContainer, TextAddActivity, TextToDoList } from "./styles";
 import { Activity } from '../../models/toDoListSchema';
 import { ToDoListBox } from '../../components/ToDoListBox';
 import { ModalToDO } from '../../components/ModalToDo';
@@ -18,22 +17,23 @@ export function ToDoList() {
 
   return (
     <MainContainer>
-      <HeaderContainer>
-        <BackButton />
-      </HeaderContainer>
       <TextToDoList>Lista de Afazeres</TextToDoList>
-      <FlatList
-        style={{
-          height: 150,
-        }}
-        data={userActivitys}
-        keyExtractor={(item: Activity) => item._id.toString()}
-        renderItem={({ item }: { item: Activity }) => <ToDoListBox props={item.name} />}
-      />
-      <ModalToDO modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      <ListView>
+        <FlatList
+          data={userActivitys}
+          keyExtractor={(item: Activity) => item._id.toString()}
+          renderItem={({ item }: { item: Activity }) => <ToDoListBox props={item.name} />}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            height: 'auto',
+          }}
+          numColumns={1}
+        />
+      </ListView>
       <ButtonAddActivity onPress={() => setModalVisible(true)}>
         <TextAddActivity>Adicionar atividade</TextAddActivity>
       </ButtonAddActivity>
+      <ModalToDO modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </MainContainer>
   );
 }
