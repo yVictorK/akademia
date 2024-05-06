@@ -37,7 +37,7 @@ export function MainScreen() {
                             <TextContainer>Aulas</TextContainer>
                         </ImageContainer>
                     </PressableContainer>
-                    <PressableContainer>
+                    <PressableContainer onPress={() => navigation.navigate('StudyMethods')}>
                         <ImageContainer
                             source={require('../../assets/images/metodos.png')}
                         >

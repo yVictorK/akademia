@@ -36,7 +36,7 @@ export function ToDoListBox({ props, getItemId, itemID, toggleItemIsCompleted, i
     <BoxContainer>
       <CheckBoxToDoList isChecked={itemState} onCheck={() => { }} itemID={itemID} toggleItemIsCompleted={toggleItemIsCompleted} />
       <TextBox>{props}</TextBox>
-      <DeleteIcon width={30} height={30} onPress={getItemId} />
+      <DeleteIcon width={25} height={25} onPress={getItemId} />
     </BoxContainer>
   );
 }

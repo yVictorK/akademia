@@ -16,17 +16,19 @@ import { Calendar } from "../screens/Calendar";
 import { UserSenttings } from "../screens/UserSenttings";
 import { UserStatistics } from "../screens/UserStatistics";
 import { View } from "react-native";
+import { StudyMethods } from "../screens/StudyMethods/StudyMethodsScreen";
+import { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProps } from "../types/navigation";
 
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
 
 export function TabRoutes() {
-
     return (
         <Navigator
             initialRouteName="MainScreenTab"
-            backBehavior="none"
             screenOptions={{
                 tabBarStyle: {
                     backgroundColor: theme.COLORS.tabBar,
@@ -53,7 +55,7 @@ export function TabRoutes() {
                     tabBarIcon: ({ focused }) => (
                         <>
                             {focused && <View style={{ height: 3, backgroundColor: theme.COLORS.primary, width: 24, position: 'absolute', top: 10, borderRadius: 5, }} />}
-                            {focused? <AdicionarIconFocused width={30} height={30} /> : <AdicionarIcon width={30} height={30} />}
+                            {focused ? <AdicionarIconFocused width={30} height={30} /> : <AdicionarIcon width={30} height={30} />}
                         </>
                     ),
                 }}
@@ -65,7 +67,7 @@ export function TabRoutes() {
                     tabBarIcon: ({ focused }) => (
                         <>
                             {focused && <View style={{ height: 3, backgroundColor: theme.COLORS.primary, width: 24, position: 'absolute', top: 10, borderRadius: 5, }} />}
-                            {focused? <CalendarioIconFocused width={30} height={30}/> : <CalendarioIcon width={30} height={30}/>}
+                            {focused ? <CalendarioIconFocused width={30} height={30} /> : <CalendarioIcon width={30} height={30} />}
                         </>
                     ),
                 }}
@@ -77,7 +79,7 @@ export function TabRoutes() {
                     tabBarIcon: ({ focused }) => (
                         <>
                             {focused && <View style={{ height: 3, backgroundColor: theme.COLORS.primary, width: 24, position: 'absolute', top: 10, borderRadius: 5, }} />}
-                            {focused ? <MenuFocused width={30} height={30}/> : <Menu width={30} height={30}/>}
+                            {focused ? <MenuFocused width={30} height={30} /> : <Menu width={30} height={30} />}
                         </>
                     ),
                 }}
@@ -89,7 +91,7 @@ export function TabRoutes() {
                     tabBarIcon: ({ focused }) => (
                         <>
                             {focused && <View style={{ height: 3, backgroundColor: theme.COLORS.primary, width: 24, position: 'absolute', top: 10, borderRadius: 5, }} />}
-                            {focused? <EstatisticaIconFocused width={30} height={30}/> : <EstatisticaIcon width={30} height={30}/>}
+                            {focused ? <EstatisticaIconFocused width={30} height={30} /> : <EstatisticaIcon width={30} height={30} />}
                         </>
                     ),
                 }}
@@ -101,9 +103,16 @@ export function TabRoutes() {
                     tabBarIcon: ({ focused }) => (
                         <>
                             {focused && <View style={{ height: 3, backgroundColor: theme.COLORS.primary, width: 24, position: 'absolute', top: 10, borderRadius: 5, }} />}
-                            {focused? <PerfilFocused  width={30} height={30}/> : <Perfil  width={30} height={30}/>}
+                            {focused ? <PerfilFocused width={30} height={30} /> : <Perfil width={30} height={30} />}
                         </>
                     ),
+                }}
+            />
+            <Screen
+                name="StudyMethods"
+                component={StudyMethods}
+                options={{
+                    tabBarButton: () => null,
                 }}
             />
 
