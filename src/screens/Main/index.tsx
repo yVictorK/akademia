@@ -30,7 +30,9 @@ export function MainScreen() {
                             <TextContainer>Editais</TextContainer>
                         </ImageContainer>
                     </PressableContainer>
-                    <PressableContainer>
+                    <PressableContainer
+                        onPress={() => navigation.navigate('YoutubeScreen')}
+                    >
                         <ImageContainer
                             source={require('../../assets/images/aulas.png')}
                         >

@@ -7,6 +7,7 @@ import { AuthRoutes } from './src/routes/auth.routes';
 import { SplashScreen } from './src/components/SplashScreen';
 import * as Font from 'expo-font';
 import { realmContext } from './src/models/RealmContext';
+import { StatusBar } from 'react-native';
 
 
 const { RealmProvider } = realmContext;
@@ -57,7 +58,8 @@ export default function App() {
                 console.error(error.message);
               }
             }}
-          >
+          > 
+            <StatusBar />
             <AppRoutes />
           </RealmProvider>
         </UserProvider>

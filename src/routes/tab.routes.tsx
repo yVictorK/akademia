@@ -20,6 +20,7 @@ import { StudyMethods } from "../screens/StudyMethods/StudyMethodsScreen";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProps } from "../types/navigation";
+import { YoutubeScreen } from "../screens/YoutubeScreen";
 
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -48,6 +49,19 @@ export function TabRoutes() {
                 tabBarHideOnKeyboard: true,
             }}
         >
+
+            <Screen
+                name="MainScreenTab"
+                component={MainScreen}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <>
+                            {focused && <View style={{ height: 3, backgroundColor: theme.COLORS.primary, width: 24, position: 'absolute', top: 10, borderRadius: 5, }} />}
+                            {focused ? <MenuFocused width={30} height={30} /> : <Menu width={30} height={30} />}
+                        </>
+                    ),
+                }}
+            />
             <Screen
                 name="ToDoList"
                 component={ToDoList}
@@ -72,18 +86,7 @@ export function TabRoutes() {
                     ),
                 }}
             />
-            <Screen
-                name="MainScreenTab"
-                component={MainScreen}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <>
-                            {focused && <View style={{ height: 3, backgroundColor: theme.COLORS.primary, width: 24, position: 'absolute', top: 10, borderRadius: 5, }} />}
-                            {focused ? <MenuFocused width={30} height={30} /> : <Menu width={30} height={30} />}
-                        </>
-                    ),
-                }}
-            />
+
             <Screen
                 name="UserStatisticsTab"
                 component={UserStatistics}
@@ -111,6 +114,14 @@ export function TabRoutes() {
             <Screen
                 name="StudyMethods"
                 component={StudyMethods}
+                options={{
+                    tabBarButton: () => null,
+                }}
+            />
+
+            <Screen
+                name="YoutubeScreen"
+                component={YoutubeScreen}
                 options={{
                     tabBarButton: () => null,
                 }}

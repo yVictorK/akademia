@@ -9,6 +9,7 @@ export type routes = {
   ToDoList: any;
   MainScreenTab: any;
   StudyMethods: any;
+  YoutubeScreen: any;
 };
 
 export type NavigationProps = NativeStackNavigationProp<routes>;
