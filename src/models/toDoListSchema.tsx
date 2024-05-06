@@ -4,6 +4,7 @@ export class Activity extends Realm.Object<Activity> {
   _id!: Realm.BSON.ObjectId;
   name!: string;
   userId!: string;
+  isComplete!: boolean;
 
   static schema: Realm.ObjectSchema = {
     name: 'Activity',
@@ -12,6 +13,7 @@ export class Activity extends Realm.Object<Activity> {
       _id: { type: 'objectId', default: () => new Realm.BSON.ObjectId() },
       name: 'string',
       userId: 'string',
+      isComplete: {type: 'bool', default: false},
     },
   };
 }

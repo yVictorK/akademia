@@ -50,15 +50,6 @@ export const TextButtons = styled.Text`
 
 `;
 
-export const TextInputModal = styled.TextInput`
-    width: 100%;
-    background-color: ${({ theme }) => theme.COLORS.inputBackground};
-    color: ${({ theme }) => theme.COLORS.text_primary};
-    padding: 10px 10px 10px 20px;
-    border-radius: 10px;
-    border-width: 1px;
-    border-color: ${({theme}) => theme.COLORS.text_secundary};
-`;
 
 export const ErrorText = styled.Text`
     color: ${({ theme }) => theme.COLORS.error};

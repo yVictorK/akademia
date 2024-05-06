@@ -26,6 +26,7 @@ export function TabRoutes() {
     return (
         <Navigator
             initialRouteName="MainScreenTab"
+            backBehavior="none"
             screenOptions={{
                 tabBarStyle: {
                     backgroundColor: theme.COLORS.tabBar,

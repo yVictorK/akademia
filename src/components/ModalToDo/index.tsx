@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
-import {Modal } from "react-native";
+import { Modal, Text } from "react-native";
 import { Activity } from "../../models/toDoListSchema";
 import { useUser } from "@realm/react";
 import { realmContext } from "../../models/RealmContext";
-import { AddButton, ButtonsView, CancelButton, CenteredView, ModalView, TextButtons, TextInputModal, TextModal } from "./styles";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { modal, ModalSchema } from "./modalToDoSchema";
+import { AddButton, ButtonsView, CancelButton, CenteredView, ErrorText, ModalView, TextButtons, TextInputModal, TextModal } from "./styles";
+import { Controller, useForm } from "react-hook-form";
 
 interface ModalProps {
     modalVisible: boolean;
@@ -17,11 +20,20 @@ export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
     const realm = useRealm();
     const user = useUser();
     const activityQuery = useQuery(Activity);
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm<modal>({
+        resolver: zodResolver(ModalSchema),
+        defaultValues: {
+            texto: '',
+        },
+    });
 
-    const [ActivityName, setActivityName] = useState('');
-
-    const addActivity = useCallback(() => {
-        const currentActivityName = ActivityName;
+    const addActivity = useCallback((data: modal) => {
+        const currentActivityName = data.texto;
         const activity = realm.write(() => {
             return new Activity(realm, {
                 name: currentActivityName,
@@ -30,9 +42,14 @@ export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
         });
         console.log("criado ", activity);
         setModalVisible(false);
-        setActivityName('');
-    }, [realm, user, ActivityName],
+        reset();
+    }, [realm, user],
     );
+
+    const cancelupdate = () => {
+        setModalVisible(false);
+        reset();
+    }
 
     useEffect(() => {
         realm.subscriptions.update(mutableSubs => {
@@ -54,19 +71,26 @@ export function ModalToDO({ modalVisible, setModalVisible }: ModalProps) {
                     elevation: 5,
                 }}>
                     <TextModal>Adicionar uma nova atividade</TextModal>
-                    <TextInputModal
-                        value={ActivityName}
-                        onChangeText={(text) => {
-                            setActivityName(text);
-                        }}
-                        placeholder="Digite o nome da atividade"
-                        placeholderTextColor={"#B0B0B0"}
-                    ></TextInputModal>
+                    <Controller
+                        name="texto"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                            <>
+                                <TextInputModal
+                                    value={field.value}
+                                    onChangeText={field.onChange}
+                                    placeholder="Digite o nome da atividade"
+                                    placeholderTextColor={"#B0B0B0"}
+                                />
+                                {fieldState.error ? <ErrorText>{fieldState.error.message}</ErrorText> : null}
+                            </>
+                        )}
+                    />
                     <ButtonsView>
-                        <CancelButton onPress={() => setModalVisible(false)}>
+                        <CancelButton onPress={cancelupdate}>
                             <TextButtons>Cancelar</TextButtons>
                         </CancelButton>
-                        <AddButton onPress={addActivity}>
+                        <AddButton onPress={handleSubmit(addActivity)}>
                             <TextButtons>Confirmar</TextButtons>
                         </AddButton>
                     </ButtonsView>
