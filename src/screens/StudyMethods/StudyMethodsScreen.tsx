@@ -2,7 +2,6 @@ import { HeaderStudyMethods, HeaderText, MainContainer, BlueText, MethodsView } 
 import Icon from '../../assets/images/icon45.svg';
 import { BackButton } from "../../components/BackButton";
 import StudyMethodBox from "../../components/StudyMethodsComponent";
-import { ScrollView, View } from "react-native";
 
 const pomodoro = [
     "A Técnica Pomodoro é um método de gerenciamento de tempo desenvolvido por Francesco Cirillo no final dos anos 1980. A técnica consiste na utilização de um cronômetro para dividir o trabalho em ",
