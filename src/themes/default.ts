@@ -23,9 +23,9 @@ export default {
 
     },
     FONTS: {
-        primaryTitles: 'Nexa-Heavy',
-        contents: 'Poppins-Medium',
-        textButtons: 'Poppins-SemiBold',
+        primaryTitles: 'NexaHeavy',
+        contents: 'PoppinsMedium',
+        textButtons: 'PoppinsSemiBold',
     },
 
 }

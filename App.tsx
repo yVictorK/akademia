@@ -5,7 +5,7 @@ import { AppRoutes } from './src/routes';
 import { AppProvider, UserProvider } from '@realm/react';
 import { AuthRoutes } from './src/routes/auth.routes';
 import { SplashScreen } from './src/components/SplashScreen';
-import * as Font from 'expo-font';
+import { useFonts } from 'expo-font';
 import { realmContext } from './src/models/RealmContext';
 import { StatusBar } from 'react-native';
 
@@ -13,39 +13,23 @@ import { StatusBar } from 'react-native';
 const { RealmProvider } = realmContext;
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
 
-  const useLoadFonts = () => {
-    const [fontsLoaded, setFontsLoaded] = useState(false);
-
-    const loadFonts = async () => {
-      await Font.loadAsync({
-        'Nexa-Heavy': require('./src/assets/fonts/Nexa/Nexa-Heavy.ttf'),
-        'Poppins-Medium': require('./src/assets/fonts/Poppins/Poppins-Medium.ttf'),
-        'Poppins-SemiBold': require('./src/assets/fonts/Poppins/Poppins-SemiBold.ttf'),
-
-      });
-      setFontsLoaded(true);
-    }
-
-    useEffect(() => {
-      loadFonts();
-    }, []);
-
-    return fontsLoaded;
-  }
+  const [loaded] = useFonts({
+    NexaHeavy: require('./src/assets/fonts/Nexa/Nexa-Heavy.ttf'),
+    PoppinsMedium: require('./src/assets/fonts/Poppins/Poppins-Medium.ttf'),
+    PoppinsSemiBold: require('./src/assets/fonts/Poppins/Poppins-SemiBold.ttf'),
+  });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    if (loaded) {
+      <SplashScreen />
+    }
+  }, [loaded]);
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!useLoadFonts || isLoading) {
-    return <SplashScreen />;
+  if (!loaded) {
+    return null;
   }
+
 
   return (
     <ThemeProvider theme={primaryTheme}>
@@ -58,7 +42,7 @@ export default function App() {
                 console.error(error.message);
               }
             }}
-          > 
+          >
             <StatusBar />
             <AppRoutes />
           </RealmProvider>
