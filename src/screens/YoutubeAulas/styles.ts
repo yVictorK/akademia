@@ -19,3 +19,9 @@ export const HeaderText = styled.Text`
     max-width: 50%;
     text-align: center;
 `;
+
+export const TextView = styled.View`
+  margin-top: 30px;
+  gap: 10px;
+
+`;

@@ -17,10 +17,8 @@ import { UserSenttings } from "../screens/UserSenttings";
 import { UserStatistics } from "../screens/UserStatistics";
 import { View } from "react-native";
 import { StudyMethods } from "../screens/StudyMethods/StudyMethodsScreen";
-import { useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationProps } from "../types/navigation";
 import { YoutubeScreen } from "../screens/YoutubeScreen";
+import { YoutubeAulas } from "../screens/YoutubeAulas";
 
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -122,6 +120,14 @@ export function TabRoutes() {
             <Screen
                 name="YoutubeScreen"
                 component={YoutubeScreen}
+                options={{
+                    tabBarButton: () => null,
+                }}
+            />
+
+            <Screen
+                name="YoutubeAulas"
+                component={YoutubeAulas}
                 options={{
                     tabBarButton: () => null,
                 }}

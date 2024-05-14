@@ -10,6 +10,7 @@ export type routes = {
   MainScreenTab: any;
   StudyMethods: any;
   YoutubeScreen: any;
+  YoutubeAulas: { text: string };
 };
 
 export type NavigationProps = NativeStackNavigationProp<routes>;
