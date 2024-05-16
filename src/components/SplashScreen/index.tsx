@@ -8,7 +8,7 @@ export interface SplashScreenProps {
 
 }
 
-export const SplashScreen = ({ onAnimationFinish }) => {
+export const SplashScreen = () => {
     return (
       <ContainerSplash>
         <LottieView
@@ -20,7 +20,6 @@ export const SplashScreen = ({ onAnimationFinish }) => {
           autoPlay={true}
           loop={false}
           resizeMode='center'
-          onAnimationFinish={onAnimationFinish}
         />
       </ContainerSplash>
     );
