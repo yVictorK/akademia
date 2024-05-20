@@ -1,32 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, View, useWindowDimensions } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, RefreshControl, Text, View, useWindowDimensions } from 'react-native';
 import { BackButton } from "../../components/BackButton";
 import { HeaderYoutube, HeaderText, MainContainer } from "./styles";
 import Icon from '../../assets/images/icon45.svg';
 import { fetchYouTubeVideos, YouTubeVideo } from '../../services/APIYoutubeService';
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { routes } from "types/navigation";
-import YoutubeIframe from 'react-native-youtube-iframe';
-
-interface RouteParams {
-    text: string;
-}
+import CardAulas from '../../components/CardAulas';
+import Theme from '../../themes/default';
 
 export function YoutubeAulas() {
     const route = useRoute<RouteProp<routes, 'YoutubeAulas'>>();
     const { text } = route.params;
     const [videos, setVideos] = useState<YouTubeVideo[]>([]);
-    const { width } = useWindowDimensions();
-    const videoWidth = width*0.8;
-    const [ready, setReady] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const searchQuery = `aulas para vestibular e Enem de ${text}`;
-        fetchYouTubeVideos(searchQuery).then(setVideos);
+        fetchYouTubeVideos(searchQuery).then(setVideos).catch(() => setIsLoading(false));
+        console.log("videos atualizados");
     }, [text]);
-
-    const height = videos[0]?.snippet.thumbnails.high;
-    console.log(height);
 
     return (
         <MainContainer>
@@ -35,39 +28,25 @@ export function YoutubeAulas() {
                 <HeaderText>{text}</HeaderText>
                 <Icon />
             </HeaderYoutube>
-            <View
-                style={{
-
-                    width: '100%',
-                }}
-            >
-                <View
-                    style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: 10,
-                        borderRadius: 15,
-                        backgroundColor: '#3A3D5C',
-                    }}
-                >
-                    <YoutubeIframe
-                        height={videoWidth* 0.6}
-                        videoId={videos[0]?.id.videoId}
-                        width={videoWidth}
-                        onReady={() => setReady(true)}
-
-                    />
-                    <Text
-                        style={{
-                            color: 'white',
-                            padding: 10,
-                            fontFamily: 'NexaHeavy',
-                        }}
-                    >{videos[0]?.snippet.title}</Text>
-                    {!ready && <ActivityIndicator color="blue" />}
-                </View>
-
-            </View>
+            <FlatList
+                data={videos}
+                keyExtractor={(item) => item.id.videoId}
+                renderItem={({ item }) => <CardAulas video={item} />}
+                showsVerticalScrollIndicator={false}
+                ListEmptyComponent={
+                    isLoading
+                        ? <ActivityIndicator color={Theme.COLORS.primary}/>
+                        : <Text style={{
+                            width: '100%',
+                            textAlign: 'center',
+                            color: Theme.COLORS.text_primary,
+                            fontFamily: Theme.FONTS.contents,
+                            fontSize: parseInt(Theme.FONTSIZES.medium),
+                        }} >Nada encotrado</Text>
+                }
+                contentContainerStyle={{ padding: 10, paddingBottom: 150, marginTop: 50 }}
+                ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+            />
         </MainContainer>
     );
 }

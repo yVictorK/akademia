@@ -3,13 +3,14 @@ import styled from "styled-components/native";
 export const MainContainer = styled.SafeAreaView`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.background};
-  padding: 25px;
+  padding: 25px 25px 0 25px;
 `;
 
 export const HeaderYoutube = styled.View`
-flex-direction: row;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 `;
 
 export const HeaderText = styled.Text`

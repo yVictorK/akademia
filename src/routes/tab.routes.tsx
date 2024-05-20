@@ -125,14 +125,6 @@ export function TabRoutes() {
                 }}
             />
 
-            <Screen
-                name="YoutubeAulas"
-                component={YoutubeAulas}
-                options={{
-                    tabBarButton: () => null,
-                }}
-            />
-
         </Navigator>
     );
 }
