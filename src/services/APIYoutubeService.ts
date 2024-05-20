@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const YOUTUBE_API_KEY = 'AIzaSyBE-K5w2Y87McGGOahKOk_B_Z4Hx4ORg0U';
+const API_KEY = 'AIzaSyC3_8VQVFFzgVSwTO56-4-3aGELEldqlOc';
 const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 
 export interface YouTubeVideo {
@@ -28,7 +28,7 @@ export const fetchYouTubeVideos = async (searchQuery: string): Promise<YouTubeVi
             params: {
                 part: 'snippet',
                 maxResults: 10,
-                key: YOUTUBE_API_KEY,
+                key: API_KEY,
                 q: searchQuery,
                 type: 'video'
             }
