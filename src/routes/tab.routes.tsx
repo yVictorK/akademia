@@ -10,7 +10,7 @@ import EstatisticaIcon from '../assets/images/estatisticaIcon.svg';
 import EstatisticaIconFocused from '../assets/images/EstatisticaIconFocused.svg';
 import Perfil from '../assets/images/perfil.svg';
 import PerfilFocused from '../assets/images/UserIconFocused.svg';
-import { MainScreen } from "../screens/Main";
+import { Home } from "../screens/Home";
 import { ToDoList } from "../screens/ToDoListScreen";
 import { Calendar } from "../screens/Calendar";
 import { UserSenttings } from "../screens/UserSenttings";
@@ -27,7 +27,7 @@ const { Navigator, Screen } = createBottomTabNavigator();
 export function TabRoutes() {
     return (
         <Navigator
-            initialRouteName="MainScreenTab"
+            initialRouteName="HomeTab"
             screenOptions={{
                 tabBarStyle: {
                     backgroundColor: theme.COLORS.tabBar,
@@ -49,8 +49,8 @@ export function TabRoutes() {
         >
 
             <Screen
-                name="MainScreenTab"
-                component={MainScreen}
+                name="HomeTab"
+                component={Home}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <>
