@@ -16,7 +16,7 @@ export const HeaderText = styled.Text`
     color: ${({ theme }) => theme.COLORS.text_primary};
     font-family: ${({ theme }) => theme.FONTS.textButtons};
     font-size: 30px;
-    max-width: 50%;
+    max-width: 70%;
     text-align: center;
 `;
 
