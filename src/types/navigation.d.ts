@@ -1,15 +1,16 @@
-  import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-  export type routes = {
-    Splash: any;
-    Welcome: any;
-    Login: any;
-    SignUp: any;
-    ToDoList: any;
-    HomeTab: any;
-    StudyMethods: any;
-    YoutubeScreen: any;
-    YoutubeAulas: { text: string };
-  };
+export type routes = {
+  Splash: undefined;
+  Welcome: undefined;
+  Login: undefined;
+  SignUp: undefined;
+  ToDoList: undefined;
+  HomeTab: undefined;
+  StudyMethods: undefined;
+  YoutubeScreen: undefined;
+  YoutubeAulas: { text?: string, duration?: 'any' | 'short' | 'medium' | 'long'};
+  FilterYoutubeVideos: {currentTitle: string};
+};
 
-  export type NavigationProps = NativeStackNavigationProp<routes>;
+export type NavigationProps = NativeStackNavigationProp<routes>;

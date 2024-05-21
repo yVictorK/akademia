@@ -8,18 +8,22 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 import { routes } from "../../types/navigation";
 import CardAulas from '@components/CardAulas';
 import Theme from '@themes/default';
+import { FilterBox } from '@components/FilterVideosBox';
 
 export function YoutubeAulas() {
     const route = useRoute<RouteProp<routes, 'YoutubeAulas'>>();
-    const { text } = route.params;
+    const { text, duration } = route.params;
     const [videos, setVideos] = useState<YouTubeVideo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const searchQuery = `aulas para vestibular e Enem de ${text}`;
-        fetchYouTubeVideos(searchQuery).then(setVideos).catch(() => setIsLoading(false));
-        console.log("videos atualizados");
-    }, [text, isLoading]);
+        const searchQuery = `videoaula detalhada para vestibular e Enem sobre ${text} | explicação completa | ensino médio`;
+        fetchYouTubeVideos(searchQuery, duration )
+            .then(setVideos)
+            .catch(() => setIsLoading(false))
+            .finally(() => setIsLoading(false));
+    }, [text, isLoading, duration]);
+
 
     return (
         <MainContainer>
@@ -30,12 +34,16 @@ export function YoutubeAulas() {
             </HeaderYoutube>
             <FlatList
                 data={videos}
+                ListHeaderComponent={<FilterBox text={text} />}
+                ListHeaderComponentStyle={{
+                    marginVertical: 15,
+                }}
                 keyExtractor={(item) => item.id.videoId}
                 renderItem={({ item }) => <CardAulas video={item} />}
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={
                     isLoading
-                        ? <ActivityIndicator color={Theme.COLORS.primary}/>
+                        ? <ActivityIndicator color={Theme.COLORS.primary} />
                         : <Text style={{
                             width: '100%',
                             textAlign: 'center',
@@ -44,9 +52,12 @@ export function YoutubeAulas() {
                             fontSize: parseInt(Theme.FONTSIZES.medium),
                         }} >Nada encotrado</Text>
                 }
-                contentContainerStyle={{ padding: 10, paddingBottom: 150, marginTop: 50 }}
+                contentContainerStyle={{ padding: 10, paddingBottom: 150, }}
                 ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
             />
         </MainContainer>
     );
 }
+
+
+

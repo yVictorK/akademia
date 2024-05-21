@@ -11,20 +11,14 @@ const CardAulas = ({ video }: VideoItemProps) => {
     const { width } = useWindowDimensions();
     const videoWidth = width * 0.8;
     const videoHeight = videoWidth * 0.6;
-    const [play, setPlay] = useState(false); 
 
     return (
         <View style={styles.container}>
             <YoutubeIframe
+                
                 height={videoHeight}
                 videoId={video.id.videoId}
                 width={videoWidth}
-                play={play}
-                onChangeState={event => {
-                    if (event === 'unstarted') {
-                        setPlay(false); 
-                    }
-                }}
             />
             <Text style={styles.title}>{video.snippet.title}</Text>
         </View>

@@ -22,20 +22,33 @@ interface YouTubeApiResponse {
     items: YouTubeVideo[];
 }
 
-export const fetchYouTubeVideos = async (searchQuery: string): Promise<YouTubeVideo[]> => {
+interface YouTubeApiParams {
+    part: string;
+    maxResults: number;
+    key: string;
+    q: string;
+    type: string;
+    videoDuration?: 'short' | 'medium' | 'long' | string;
+}
+
+export const fetchYouTubeVideos = async (searchQuery: string, duration?: 'any' |'short' | 'medium' | 'long' ): Promise<YouTubeVideo[]> => {
     try {
-        const response = await axios.get<YouTubeApiResponse>(BASE_URL, {
-            params: {
-                part: 'snippet',
-                maxResults: 10,
-                key: API_KEY,
-                q: searchQuery,
-                type: 'video'
-            }
-        });
+        const params: YouTubeApiParams = {
+            part: 'snippet',
+            maxResults: 10,
+            key: API_KEY,
+            q: searchQuery,
+            type: 'video'
+        };
+        
+        if (duration) {
+            params.videoDuration = duration; 
+        }
+
+        const response = await axios.get<YouTubeApiResponse>(BASE_URL, { params });
         return response.data.items;
     } catch (error) {
-        console.error('Erro ao buscar vídeos', error);
-        return [];
+        console.error('Ocorreu um erro ao buscar os vídeos', error);
+        throw error;
     }
 };
