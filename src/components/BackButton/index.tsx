@@ -1,5 +1,5 @@
 import React from 'react';
-import Seta from '../../assets/images/seta.svg';
+import Seta from '@images/seta.svg';
 import { Button } from './styles';
 import { useNavigation } from '@react-navigation/native';
 

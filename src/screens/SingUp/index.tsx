@@ -1,5 +1,5 @@
 
-import { HeaderSingIn } from "../../components/SingInHeader";
+import { HeaderSingIn } from "@components/SingInHeader";
 import {
     ButtonAction,
     CheckBoxText,
@@ -14,10 +14,10 @@ import {
     TextTitle
 }
     from "./styles";
-import EmailIcon from '../../assets/images/emailIcon.svg'
-import LockIcon from '../../assets/images/lockIcon.svg'
-import ControllerTextInput from "../../components/ControllerInputText";
-import CheckBox from "../../components/CheckBox";
+    import EmailIcon from '../../assets/images/emailIcon.svg';
+import LockIcon from '@images/lockIcon.svg';
+import ControllerTextInput from "@components/ControllerInputText";
+import CheckBox from "@components/CheckBox";
 import { useState } from "react";
 import { NavigationProps } from "../../types/navigation";
 import { AuthOperationName, useEmailPasswordAuth } from "@realm/react";

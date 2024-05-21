@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { TabRoutes } from "./tab.routes";
-import { YoutubeAulas } from '../screens/YoutubeAulas';
+import { YoutubeAulas } from '@screens/YoutubeAulas';
 
 const Stack = createNativeStackNavigator();
 

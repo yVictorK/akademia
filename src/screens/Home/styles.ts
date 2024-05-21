@@ -1,5 +1,5 @@
+import { useWindowDimensions } from "react-native";
 import styled from "styled-components/native";
-
 
 export const MainContainer = styled.View`
   flex: 1;
@@ -33,7 +33,7 @@ export const ViewActitivitys = styled.View`
 `;
 
 export const PressableContainer = styled.TouchableOpacity`
-    width: 170px;
+    width: 47% ;
     aspect-ratio: 1/0.6;
     border-radius: 15px;
     overflow: hidden;

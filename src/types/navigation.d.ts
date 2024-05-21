@@ -1,16 +1,15 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+  import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-export type routes = {
-  Splash: any;
-  Home: any;
-  Login: any;
-  SignUp: any;
-  MainScreen: any;
-  ToDoList: any;
-  MainScreenTab: any;
-  StudyMethods: any;
-  YoutubeScreen: any;
-  YoutubeAulas: { text: string };
-};
+  export type routes = {
+    Splash: any;
+    Welcome: any;
+    Login: any;
+    SignUp: any;
+    ToDoList: any;
+    HomeTab: any;
+    StudyMethods: any;
+    YoutubeScreen: any;
+    YoutubeAulas: { text: string };
+  };
 
-export type NavigationProps = NativeStackNavigationProp<routes>;
+  export type NavigationProps = NativeStackNavigationProp<routes>;

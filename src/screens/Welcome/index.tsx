@@ -1,5 +1,5 @@
-import { Logo } from "../../components/Logo";
-import { WelcomeContainer } from "../../components/WelcomeContainer";
+import { Logo } from "@components/Logo";
+import { WelcomeContainer } from "@components/WelcomeContainer";
 import { HomeContainer } from "./styles";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 

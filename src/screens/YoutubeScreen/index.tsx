@@ -1,16 +1,16 @@
-import { BackButton } from "../../components/BackButton";
+import { BackButton } from "@components/BackButton";
 import { HeaderYoutube, HeaderText, MainContainer } from "./styles";
-import Icon from '../../assets/images/icon45.svg';
-import { CardYoutube } from "../../components/CardsYoutube";
+import Icon from '@images/icon45.svg';
+import { CardYoutube } from "@components/CardsYoutube";
 import { FlatList, View } from 'react-native';
-import Art from "../../assets/images/ArtIcon.svg";
-import History from "../../assets/images/HistoryIcon.svg";
-import Geografy from "../../assets/images/Geografy.svg";
-import Math from "../../assets/images/math.svg";
-import Idioma from "../../assets/images/idioma.svg";
-import Physics from "../../assets/images/physics-formula-svgrepo-com.svg";
-import Atom from "../../assets/images/atom.svg";
-import Biology from "../../assets/images/biology.svg";
+import Art from "@images/ArtIcon.svg";
+import History from "@images/HistoryIcon.svg";
+import Geografy from "@images/Geografy.svg";
+import Math from "@images/math.svg";
+import Idioma from "@images/idioma.svg";
+import Physics from "@images/physics-formula-svgrepo-com.svg";
+import Atom from "@images/atom.svg";
+import Biology from "@images/biology.svg";
 
 const materias = [
     { text: 'Arte', image: <Art width={90} height={90} fill={'#cccccc'} />, color: '#d3a007' },

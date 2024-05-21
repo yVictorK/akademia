@@ -1,6 +1,6 @@
 import { TouchableOpacity } from "react-native";
 import { CheckBoxContainer} from "./styles";
-import Checked from '../../assets/images/Checked.svg'
+import Checked from '@images/Checked.svg'
 
 
 interface CheckBoxProps{

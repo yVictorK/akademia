@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import YoutubeIframe from 'react-native-youtube-iframe';
-import { YouTubeVideo } from '../../services/APIYoutubeService';
+import { YouTubeVideo } from '@services/APIYoutubeService';
 
 interface VideoItemProps {
     video: YouTubeVideo;

@@ -1,10 +1,12 @@
 import { MainContainer, PressableContainer, TextContainer, TextHeader, ViewActitivitys, ImageContainer, ContainerActivityView, ContainerActivityText } from "./styles";
-import { MainHeader } from "../../components/MainHeader";
-import AppCalendar from "../../components/CalendarMain";
+import { MainHeader } from "@components/MainHeader";
+import AppCalendar from "@components/CalendarMain";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProps } from "../../types/navigation";
+import { useWindowDimensions } from "react-native";
 
 export function Home() {
+
     const navigation = useNavigation<NavigationProps>();
     return (
         <MainContainer>

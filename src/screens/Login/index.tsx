@@ -1,13 +1,13 @@
-import { HeaderSingIn } from "../../components/SingInHeader";
+import { HeaderSingIn } from "@components/SingInHeader";
 import { ButtonAction, ButtonsContainer, InputContainer, InputContainerView, LoginContainer, TextBetweenButtons, TextButtonAction, TextContent, TextForgotPassword, TextInputContainerView, TextSingUp, TextTitle } from "./styles";
-import EmailIcon from '../../assets/images/emailIcon.svg'
-import LockIcon from '../../assets/images/lockIcon.svg'
-import ControllerTextInput from "../../components/ControllerInputText";
-import { GoogleLogin } from "../../components/GoogleLoginButton";
+import EmailIcon from '@images/emailIcon.svg';
+import LockIcon from '@images/lockIcon.svg';
+import ControllerTextInput from "@components/ControllerInputText";
+import { GoogleLogin } from "@components/GoogleLoginButton";
 import { useEmailPasswordAuth } from "@realm/react";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { NavigationProps } from "../../types/navigation";
-import theme from '../../themes/default'
+import theme from '@themes/default'
 import { useForm } from "react-hook-form";
 import { user, userSchema } from "./signISchema";
 import { zodResolver } from "@hookform/resolvers/zod";

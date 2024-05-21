@@ -1,12 +1,12 @@
 import { Alert, FlatList } from 'react-native';
 import { ButtonAddActivity, HeaderContainer, ListView, MainContainer, TextAddActivity, TextToDoList } from "./styles";
-import { Activity } from '../../models/toDoListSchema';
-import { ToDoListBox } from '../../components/ToDoListBox';
-import { ModalToDO } from '../../components/ModalToDo';
+import { Activity } from '@models/toDoListSchema';
+import { ToDoListBox } from '@components/ToDoListBox';
+import { ModalToDO } from '@components/ModalToDo';
 import { useCallback, useEffect, useState } from 'react';
-import { realmContext } from "../../models/RealmContext";
+import { realmContext } from "@models/RealmContext";
 import { useUser } from '@realm/react';
-import { ModalDeleteItem } from '../../components/ModalDeleteItem';
+import { ModalDeleteItem } from '@components/ModalDeleteItem';
 import { BSON } from 'realm';
 
 const { useQuery, useRealm } = realmContext;
