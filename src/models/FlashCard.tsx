@@ -5,6 +5,7 @@ export class FlashCardSchema extends Realm.Object<FlashCardSchema> {
     pergunta!: string;
     resposta!: string;
     timer?: number;
+    isCorrect?: boolean;
 
     static schema: Realm.ObjectSchema = {
         name: 'flashcard',
@@ -13,6 +14,7 @@ export class FlashCardSchema extends Realm.Object<FlashCardSchema> {
             pergunta: 'string',
             resposta: 'string',
             timer: 'int?',
+            isCorrect: 'bool?'
         },
         embedded: true,
     };
