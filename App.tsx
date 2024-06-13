@@ -40,7 +40,16 @@ export default function App() {
               flexible: true,
               onError: (session, error) => {
                 console.error(error.message);
-              }
+              },
+              initialSubscriptions: {
+                update(subs, realm) {
+                  subs.add(realm.objects('Activity'));
+                  subs.add(realm.objects('user'));
+                  subs.add(realm.objects('baralho'));
+                },
+                rerunOnOpen: true,
+              },
+
             }}
           >
             <StatusBar />

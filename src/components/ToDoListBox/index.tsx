@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from "react";
 import DeleteIcon from "../../assets/images/deleteIcon.svg";
 import { BoxContainer, CheckBoxContainer, TextBox } from "./styles";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Checked from "../../assets/images/TaskCompleted.svg";
+import EditIcon from '../../assets/images/edit.svg';
 import { BSON } from "realm";
 
 interface CheckBoxProps {
@@ -31,12 +32,15 @@ const CheckBoxToDoList: React.FC<CheckBoxProps> = ({ isChecked, onCheck, toggleI
   );
 };
 
-export function ToDoListBox({ props, getItemId, itemID, toggleItemIsCompleted, itemState }: any) {
+export function ToDoListBox({ props, getItemId, getItemIdToEdit, itemID, toggleItemIsCompleted, itemState }: any) {
   return (
     <BoxContainer>
       <CheckBoxToDoList isChecked={itemState} onCheck={() => { }} itemID={itemID} toggleItemIsCompleted={toggleItemIsCompleted} />
       <TextBox>{props}</TextBox>
-      <DeleteIcon width={25} height={25} onPress={getItemId} />
+      <View style={{flexDirection: 'row', gap : 10}}>
+        <EditIcon width={25} height={25} onPress={getItemIdToEdit} />
+        <DeleteIcon width={25} height={25} onPress={getItemId} />
+      </View>
     </BoxContainer>
   );
 }

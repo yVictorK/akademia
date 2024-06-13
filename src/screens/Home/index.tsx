@@ -25,7 +25,7 @@ export function Home() {
                             <TextContainer>Atividades</TextContainer>
                         </ImageContainer>
                     </PressableContainer>
-                    <PressableContainer>
+                    <PressableContainer onPress={() => navigation.navigate('notices')}>
                         <ImageContainer
                             source={require('../../assets/images/editais.png')}
                         >

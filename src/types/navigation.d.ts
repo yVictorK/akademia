@@ -11,6 +11,7 @@ export type routes = {
   YoutubeScreen: undefined;
   YoutubeAulas: { text?: string, duration?: 'any' | 'short' | 'medium' | 'long'};
   FilterYoutubeVideos: {currentTitle: string};
+  notices: undefined;
 };
 
 export type NavigationProps = NativeStackNavigationProp<routes>;

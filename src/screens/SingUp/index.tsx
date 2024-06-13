@@ -29,7 +29,7 @@ import { user, userSchema } from "./signUpSchema";
 
 
 export function SignUp() {
-    const navigation = useNavigation<NavigationProps>();
+    const {navigate} = useNavigation<NavigationProps>();
     const [isChecked, setIsChecked] = useState(false);
     const { register, result } = useEmailPasswordAuth();
     const theme = useTheme();
@@ -48,12 +48,7 @@ export function SignUp() {
 
     const signUpUser = (data: user) => {
         register    (data);
-        navigation.dispatch(CommonActions.reset({
-            index: 0,
-            routes: [
-                { name: 'Home' },
-            ]
-        }));
+        navigate('Welcome');
     }
 
 

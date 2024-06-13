@@ -40,7 +40,7 @@ export function YoutubeAulas() {
                 }}
                 keyExtractor={(item) => item.id.videoId}
                 renderItem={({ item }) => <CardAulas video={item} />}
-                showsVerticalScrollIndicator={false}
+                showsVerticalScrollIndicator={true}
                 ListEmptyComponent={
                     isLoading
                         ? <ActivityIndicator color={Theme.COLORS.primary} />
