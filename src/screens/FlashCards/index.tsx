@@ -296,6 +296,12 @@ export function ModalAddBaralho({ modalVisible, setModalVisible }: ModalProps) {
   );
 }
 
+const EditBaralhoSchema = z.object({
+  name: z.string().min(1, 'Nome é obrigatório').max(60, 'Nome muito grande, por favor digite um nome menor.'),
+});
+
+type EditBaralhoForm = z.infer<typeof EditBaralhoSchema>;
+
 interface RenderBaralhoProps {
   item: BaralhoSchema;
   length: number;
@@ -303,15 +309,99 @@ interface RenderBaralhoProps {
 
 function RenderBaralho({ item, length }: RenderBaralhoProps) {
   const navigation = useNavigation<NavigationProp<routes>>();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const realm = useRealm();
+
+  const { control, handleSubmit, formState: { errors }, reset } = useForm<EditBaralhoForm>({
+    resolver: zodResolver(EditBaralhoSchema),
+    defaultValues: {
+      name: item.name,
+    },
+  });
+
+  const handleEdit = (data: EditBaralhoForm) => {
+    realm.write(() => {
+      item.name = data.name;
+    });
+    setEditModalVisible(false);
+  };
+
+  const handleDelete = () => {
+    realm.write(() => {
+      if (item.isValid()) {
+        const flashcards = item.cards;
+        if (flashcards && flashcards.isValid()) {
+          realm.delete(flashcards);
+        }
+        realm.delete(item);
+      }
+    });
+    setModalVisible(false);
+  };
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('RenderFlashCard', { itemID: item._id.toString() })} style={{ borderWidth: 1.5, borderColor: '#FFFFFF', borderRadius: 15, padding: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-      <Text style={{ color: 'white', fontSize: 16, fontFamily: 'PoppinsMedium' }}>{item.name}</Text>
-      <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-        <Text style={{ color: '#29A5DA', fontSize: 12, fontFamily: 'PoppinsMedium' }}>{length + ' cartas'}</Text>
-        <Gear color='white' />
-      </View>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity onPress={() => navigation.navigate('RenderFlashCard', { itemID: item._id.toString() })} style={{ borderWidth: 1.5, borderColor: '#FFFFFF', borderRadius: 15, padding: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ color: 'white', fontSize: 16, fontFamily: 'PoppinsMedium' }}>{item.name}</Text>
+        <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
+          <Text style={{ color: '#29A5DA', fontSize: 12, fontFamily: 'PoppinsMedium' }}>{length + ' cartas'}</Text>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Gear color='white' />
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+
+      <Modal visible={modalVisible} animationType="slide" transparent={true}>
+        <CenteredView>
+          <ModalView style={styles.modalView}>
+            <TextModal>O que você deseja fazer?</TextModal>
+            <ButtonsView>
+              <AddButton onPress={() => { setModalVisible(false); setEditModalVisible(true); }}>
+                <TextButtons>Editar</TextButtons>
+              </AddButton>
+              <CancelButton onPress={handleDelete}>
+                <TextButtons>Excluir</TextButtons>
+              </CancelButton>
+              <CancelButton onPress={() => setModalVisible(false)}>
+                <TextButtons>Cancelar</TextButtons>
+              </CancelButton>
+            </ButtonsView>
+          </ModalView>
+        </CenteredView>
+      </Modal>
+
+      <Modal visible={editModalVisible} animationType="slide" transparent={true}>
+        <CenteredView>
+          <ModalView style={styles.modalView}>
+            <TextModal>Editar baralho:</TextModal>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field, fieldState }) => (
+                <>
+                  <TextInputModal
+                    value={field.value}
+                    onChangeText={field.onChange}
+                    placeholder="Digite o nome do baralho"
+                    placeholderTextColor={"#B0B0B0"}
+                  />
+                  {fieldState.error ? <ErrorText>{fieldState.error.message}</ErrorText> : null}
+                </>
+              )}
+            />
+            <ButtonsView>
+              <CancelButton onPress={() => { setEditModalVisible(false); reset(); }}>
+                <TextButtons>Voltar</TextButtons>
+              </CancelButton>
+              <AddButton onPress={handleSubmit(handleEdit)}>
+                <TextButtons>Salvar</TextButtons>
+              </AddButton>
+            </ButtonsView>
+          </ModalView>
+        </CenteredView>
+      </Modal>
+    </>
   );
 }
 
@@ -324,7 +414,7 @@ export function FlashCards() {
   const [modalFlashCardVisible, setModalFlashCardVisible] = useState(false);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <MainContainer>
         <HeaderProfile>
           <BackButton />
@@ -432,5 +522,12 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: '#6c757d', // cor cinza meio azulado
+  },
+  modalView: {
+    shadowColor: "#fff",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });

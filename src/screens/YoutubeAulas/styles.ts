@@ -11,6 +11,7 @@ export const HeaderYoutube = styled.View`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  padding: 10px 0;
 `;
 
 export const HeaderText = styled.Text`

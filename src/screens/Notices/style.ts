@@ -4,6 +4,7 @@ export const MainContainer = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.background};
   padding: 25px;
+  padding-bottom: 0;
   gap: 25px;
 `;
 

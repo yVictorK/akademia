@@ -46,6 +46,7 @@ export default function App() {
                   subs.add(realm.objects('Activity'));
                   subs.add(realm.objects('user'));
                   subs.add(realm.objects('baralho'));
+                  subs.add(realm.objects('edital'));
                 },
                 rerunOnOpen: true,
               },

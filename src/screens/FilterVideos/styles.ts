@@ -8,7 +8,7 @@ interface FilterButtonProps extends TouchableOpacityProps {
 export const MainContainer = styled.SafeAreaView`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.background};
-  padding: 25px 25px 0 25px;
+  padding: 25px;
 `;
 
 export const HeaderYoutube = styled.View`
@@ -16,6 +16,7 @@ export const HeaderYoutube = styled.View`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  padding: 10px 0;
 `;
 
 export const HeaderText = styled.Text`

@@ -1,88 +1,33 @@
-import React, { useState } from 'react';
-import { View, FlatList, Modal, Text, TouchableOpacity, StyleSheet, ScrollView, Image, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, Modal, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { HeaderSingIn } from "@components/SingInHeader";
 import { MainContainer, NoticesButton, NoticesButtonText, TitleNotices } from "./style";
 import { NoticeCard } from "@components/NoticeCard";
-import MatrizEnem from '@assets/Editais/export.json'; // Certifique-se de importar o arquivo JSON correto
+import { WebView } from 'react-native-webview';
+import { realmContext } from "@models/RealmContext";
+import { EditalSchema } from "@models/EditalSchema";
+import { X } from 'phosphor-react-native';
 
-interface EditalItem {
-  title: string;
-  editalName: string;
-  json?: any;
-}
+const { useRealm, useQuery } = realmContext;
 
-const itensUEA: EditalItem[] = [
-  { title: '2020', editalName: 'editalUEA_2020.pdf' },
-  { title: '2021', editalName: 'editalUEA_2021.pdf' },
-  { title: '2022', editalName: 'editalUEA_2022.pdf' },
-  { title: '2023', editalName: 'editalUEA_2023.pdf' },
-];
-
-const itensUFAM: EditalItem[] = [
-  { title: '2020', editalName: 'editalUFAM_2020.pdf' },
-  { title: '2021', editalName: 'editalUFAM_2021.pdf' },
-  { title: '2022', editalName: 'editalUFAM_2022.pdf' },
-  { title: '2023', editalName: 'editalUFAM_2023.pdf' },
-];
-
-const itensENEM: EditalItem[] = [
-  { title: 'ENEM', editalName: 'MatrizEnem.pdf', json: MatrizEnem },
-];
-
-// Importar todas as imagens manualmente
-const imagePaths = [
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_1.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_2.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_3.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_4.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_5.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_6.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_7.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_8.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_9.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_10.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_11.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_12.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_13.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_14.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_15.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_16.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_17.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_18.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_19.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_20.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_21.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_22.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_23.png'),
-  require('../../assets/Editais/MatrizEnemImages/a0068ebc_24.png')
-];
 
 export function Notices() {
-  const [editais, setEditais] = useState<EditalItem[]>(itensUEA);
-  const [selectedButton, setSelectedButton] = useState('UEA');
-  const [modalVisible, setModalVisible] = useState(false);
-  const [jsonContent, setJsonContent] = useState<any>(null);
+  const realm = useRealm();
+  const editais = useQuery(EditalSchema);
+  const [selectedButton, setSelectedButton] = useState<string>('UFAM');
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedLink, setSelectedLink] = useState<string | null>(null);
 
-  const handleButtonPress = (button: string) => {
-    setSelectedButton(button);
-    if (button === 'UEA') {
-      setEditais(itensUEA);
-    } else if (button === 'UFAM') {
-      setEditais(itensUFAM);
-    } else if (button === 'ENEM') {
-      setEditais(itensENEM);
-    }
+  const handleButtonPress = (category: string) => {
+    setSelectedButton(category);
   };
 
-  const handleNoticePress = (json: any) => {
-    if (json) {
-      console.log('JSON Content:', json);  // Debug log
-      setJsonContent(json);
-      setModalVisible(true);
-    } else {
-      Alert.alert('Erro', 'Não foi possível carregar o conteúdo do edital.');
-    }
+  const handleNoticePress = (link: string) => {
+    setSelectedLink(link);
+    setModalVisible(true);
   };
+
+  const filteredEditais = editais.filtered('category == $0', selectedButton);
 
   return (
     <MainContainer>
@@ -109,13 +54,14 @@ export function Notices() {
         </NoticesButton>
       </View>
       <FlatList
-        data={editais}
-        contentContainerStyle={{ paddingTop: 30, paddingBottom: 30 }}
+        data={filteredEditais}
+        keyExtractor={(item) => item._id.toHexString()}
+        contentContainerStyle={{ paddingTop: 30, paddingBottom: 100 }}
         renderItem={({ item }) => (
           <NoticeCard
-            title={item.title}
-            noticeName={item.editalName}
-            onPress={() => handleNoticePress(item.json)}
+            title={item.year?.toString()|| item.title}
+            noticeName={item.title}
+            onPress={() => handleNoticePress(item.link)}
           />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
@@ -126,24 +72,26 @@ export function Notices() {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View style={styles.modalContent}>
-          <ScrollView contentContainerStyle={styles.scrollViewContent}>
-            {imagePaths.map((path, index) => (
-              <Image
-                key={index}
-                source={path}
-                style={styles.pageImage}
-                resizeMode="contain"
-                onError={() => console.log('Erro ao carregar imagem:', path)}  // Debug log para erros
-              />
-            ))}
-          </ScrollView>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => setModalVisible(false)}
-          >
-            <Text style={styles.closeButtonText}>Fechar</Text>
+        <View style={{ flex: 1, backgroundColor: '#241D26' }}>
+          <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+            <X size={20} color='white' />
           </TouchableOpacity>
+          {selectedLink && (
+            <WebView
+              source={{ uri: selectedLink }}
+              style={{ flex: 1 }}
+              startInLoadingState={true}
+              renderError={() => (
+                <View style={styles.errorContainer}>
+                  <Text style={styles.errorText}>Erro ao carregar o conteúdo.</Text>
+                  <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+                    <Text style={styles.closeButtonText}>Fechar</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          )}
+
         </View>
       </Modal>
     </MainContainer>
@@ -151,28 +99,26 @@ export function Notices() {
 }
 
 const styles = StyleSheet.create({
-  modalContent: {
+  errorContainer: {
     flex: 1,
-    backgroundColor: 'white',
-  },
-  scrollViewContent: {
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 20,
   },
-  pageImage: {
-    width: '100%',
-    height: 400,
+  errorText: {
+    fontSize: 18,
+    color: 'red',
     marginBottom: 20,
   },
   closeButton: {
-    marginTop: 20,
     padding: 10,
-    backgroundColor: '#29A5DA',
     borderRadius: 10,
     alignSelf: 'center',
-  },
+    width: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end'
+},
   closeButtonText: {
-    color: '#fff',
-    fontSize: 18,
-  },
+  color: '#fff',
+  fontSize: 18,
+},
 });
