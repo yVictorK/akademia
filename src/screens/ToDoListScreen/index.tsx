@@ -11,6 +11,7 @@ import { BSON } from 'realm';
 import { z } from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const ModalSchema = z.object({
   texto: z.string()
@@ -154,40 +155,42 @@ export function ToDoList() {
   );
 
   return (
-    <MainContainer>
-      <TextToDoList>Lista de Afazeres</TextToDoList>
-      <ListView>
-        <FlatList
-          data={userActivitys}
-          keyExtractor={(item: Activity) => item._id.toString()}
-          renderItem={({ item }: { item: Activity }) => (
-            <ToDoListBox
-              props={item.name}
-              getItemIdToEdit={() => {
-                setSelectedActivityId(item._id.toString());
-                setModalEditVisible(true);
-              }}
-              getItemId={() => {
-                setSelectedActivityId(item._id.toString());
-                setModalDeleteVisible(true);
-              }}
-              itemID={item._id}
-              itemState={item.isComplete}
-              toggleItemIsCompleted={() => toggleItemIsCompleted(item._id)}
-            />
-          )}
-          showsVerticalScrollIndicator={true}
-          numColumns={1}
-        />
-        <ButtonAddActivity onPress={() => setModalVisible(true)}>
-          <TextAddActivity>Adicionar atividade</TextAddActivity>
-        </ButtonAddActivity>
-      </ListView>
-      <ModalToDO modalVisible={modalVisible} setModalVisible={setModalVisible} />
-      {selectedActivityId && selectedActivityId.length === 24 ? <ModalDeleteItem modalDeleteVisible={modalDeleteVisible} setModalDeleteVisible={setModalDeleteVisible} activityId={new BSON.ObjectId(selectedActivityId)} /> : null}
-      {selectedActivityId && selectedActivityId.length === 24 ? <ModalEditItem modalEditVisible={modalEditVisible} setModalEditVisible={setModalEditVisible} activityId={new BSON.ObjectId(selectedActivityId)} /> : null}
+    <SafeAreaView style={{flex: 1}}>
+      <MainContainer>
+        <TextToDoList>Lista de Afazeres</TextToDoList>
+        <ListView>
+          <FlatList
+            data={userActivitys}
+            keyExtractor={(item: Activity) => item._id.toString()}
+            renderItem={({ item }: { item: Activity }) => (
+              <ToDoListBox
+                props={item.name}
+                getItemIdToEdit={() => {
+                  setSelectedActivityId(item._id.toString());
+                  setModalEditVisible(true);
+                }}
+                getItemId={() => {
+                  setSelectedActivityId(item._id.toString());
+                  setModalDeleteVisible(true);
+                }}
+                itemID={item._id}
+                itemState={item.isComplete}
+                toggleItemIsCompleted={() => toggleItemIsCompleted(item._id)}
+              />
+            )}
+            showsVerticalScrollIndicator={true}
+            numColumns={1}
+          />
+          <ButtonAddActivity onPress={() => setModalVisible(true)}>
+            <TextAddActivity>Adicionar atividade</TextAddActivity>
+          </ButtonAddActivity>
+        </ListView>
+        <ModalToDO modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        {selectedActivityId && selectedActivityId.length === 24 ? <ModalDeleteItem modalDeleteVisible={modalDeleteVisible} setModalDeleteVisible={setModalDeleteVisible} activityId={new BSON.ObjectId(selectedActivityId)} /> : null}
+        {selectedActivityId && selectedActivityId.length === 24 ? <ModalEditItem modalEditVisible={modalEditVisible} setModalEditVisible={setModalEditVisible} activityId={new BSON.ObjectId(selectedActivityId)} /> : null}
 
-    </MainContainer>
+      </MainContainer>
+    </SafeAreaView>
   );
 }
 

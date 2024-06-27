@@ -52,22 +52,23 @@ export const TextModal = styled.Text`
 
 export const ButtonsView = styled.View`
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     width: 100%;
     margin-top: 20px;
+    gap: 20px;
 `;
 
 export const CancelButton = styled.TouchableOpacity`
-    padding: 15px 20px;
+    padding: 15px ;
     background-color: ${({ theme }) => theme.COLORS.primary};
     border-radius: 15px;
-    width: 120px;
     justify-content: center;
     align-items: center;
+    width: 120px;
 `;
 
 export const AddButton = styled.TouchableOpacity`
-    padding: 15px 20px;
+    padding: 15px;
     background-color: ${({ theme }) => theme.COLORS.primary};
     border-radius: 15px;
     width: 120px;

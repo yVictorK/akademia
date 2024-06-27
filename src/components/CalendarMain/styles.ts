@@ -1,8 +1,8 @@
 import styled from "styled-components/native";
 
 
-export const  CalendarView = styled.View`
-    background-color: ${({theme}) => theme.COLORS.inputBackground };
+export const CalendarView = styled.View`
+    background-color: ${({ theme }) => theme.COLORS.inputBackground};
     border-radius: 15px;
     padding:10px;
     gap: 5px;
@@ -10,19 +10,22 @@ export const  CalendarView = styled.View`
     margin-top: 20px;
 `;
 
-export const  DaysView = styled.View`
+export const DaysView = styled.View`
     flex-direction: row;
     justify-content: space-evenly;
+    width: '100%';
+    align-items: center;
+    align-self: center;
 `;
 
 export const TextCalendar = styled.Text`
-    font-family: ${({theme}) => theme.FONTS.contents};
-    font-size: ${({theme}) => theme.FONTSIZES.medium};
-    color: ${({theme}) => theme.COLORS.text_primary};
+    font-family: ${({ theme }) => theme.FONTS.contents};
+    font-size: ${({ theme }) => theme.FONTSIZES.medium};
+    color: ${({ theme }) => theme.COLORS.text_primary};
 `;
 
 export const TextDay = styled.Text`
-    font-family: ${({theme}) => theme.FONTS.contents};
-    font-size: ${({theme}) => theme.FONTSIZES.larger};
-    color: ${({theme}) => theme.COLORS.text_primary};
+    font-family: ${({ theme }) => theme.FONTS.contents};
+    font-size: ${({ theme }) => theme.FONTSIZES.larger};
+    color: ${({ theme }) => theme.COLORS.text_primary};
 `;

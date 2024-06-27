@@ -5,13 +5,14 @@ export const LoginContainer = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.background};
   padding: 25px;
+  gap: 15px;
 `;
 
 export const TextTitle = styled.Text`
   font-size: ${({ theme }) => theme.FONTSIZES.big};
   font-family: ${({ theme }) => theme.FONTS.primaryTitles};
   color: ${({ theme }) => theme.COLORS.text_primary};
-  margin-top: 30px;
+
 `;
 
 export const TextContent = styled.Text`
@@ -22,8 +23,6 @@ export const TextContent = styled.Text`
 
 export const InputContainer = styled.View`
     gap: 25px;
-    margin: 50px 0px;
-
 `;
 
 export const TextForgotPassword = styled.Text`

@@ -6,13 +6,13 @@ export const LoginContainer = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.background};
   padding: 25px;
+  gap: 20px;
 `;
 
 export const TextTitle = styled.Text`
   font-size: ${({ theme }) => theme.FONTSIZES.big};
   font-family: ${({ theme }) => theme.FONTS.primaryTitles};
   color: ${({ theme }) => theme.COLORS.text_primary};
-  margin-top: 5%;
 `;
 
 export const TextContent = styled.Text`
@@ -23,8 +23,6 @@ export const TextContent = styled.Text`
 
 export const InputContainer = styled.View`
     gap: 25px;
-    margin: 50px 0px;
-
 `;
 
 export const ButtonAction = styled.TouchableOpacity<{ error?: boolean }>`
@@ -53,8 +51,8 @@ export const TextInputContainerView = styled.Text`
 `;
 
 export const SingUpView = styled.View`
-  margin-top: 50px;
-  gap: 50px;
+  gap: 20px;
+  padding: 20px;
 `;
 
 export const CheckBoxText = styled.Text`

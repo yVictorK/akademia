@@ -27,18 +27,19 @@ export const TextModal = styled.Text`
 
 export const ButtonsView = styled.View`
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     width: 100%;
+    gap: 20px;
 `;
 
 export const CancelButton = styled.TouchableOpacity`
-    padding: 15px 20px;
+    padding: 15px;
     background-color: ${({ theme }) => theme.COLORS.error};
     border-radius: 15px;
 `;
 
 export const AddButton = styled.TouchableOpacity`
-    padding: 15px 20px;
+    padding: 15px ;
     background-color: ${({ theme }) => theme.COLORS.buttonsCreate};
     border-radius: 15px;
 `;

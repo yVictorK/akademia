@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Realm from 'realm';
-import { FlatList, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { HeaderProfile, HeaderText, MainContainer } from "./styles";
 import { BackButton } from "@components/BackButton";
-import { Gear, IconContext } from "phosphor-react-native";
+import { Gear } from "phosphor-react-native";
 import Icon from '@images/icon45.svg';
 import { realmContext } from "@models/RealmContext";
 import { BaralhoSchema } from "@models/baralhoSchema";
 import { FlashCardSchema } from "@models/FlashCard";
 import { useUser } from "@realm/react";
-import { useCallback, useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddButton, ButtonsView, CancelButton, CenteredView, ErrorText, ModalView, TextButtons, TextInputModal, TextModal } from "./styles";
 import { Controller, useForm } from "react-hook-form";
 import { z } from 'zod';
 import { Picker } from '@react-native-picker/picker';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { routes } from '../../types/navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { useRealm, useQuery } = realmContext;
 
-export const ModalSchema = z.object({
+const ModalSchema = z.object({
   texto: z.string()
     .min(1, 'Preencha os campos')
     .max(60, 'Texto muito grande, por favor digite um texto menor.')
@@ -26,124 +28,192 @@ export const ModalSchema = z.object({
 
 export type modal = z.infer<typeof ModalSchema>;
 
+const FlashCardSchemaValidation = z.object({
+  titulo: z.string()
+    .min(1, 'Título é obrigatório')
+    .max(60, 'Título muito grande, por favor digite um título menor.'),
+  pergunta: z.string()
+    .min(1, 'Pergunta é obrigatória')
+    .max(100, 'Pergunta muito grande, por favor digite uma pergunta menor.'),
+  resposta: z.string()
+    .min(1, 'Resposta é obrigatória')
+    .max(100, 'Resposta muito grande, por favor digite uma resposta menor.'),
+  selectedBaralhoId: z.string().nonempty('Selecione um baralho'),
+  selectedCronometro: z.string(),
+});
+
+type FlashCardForm = z.infer<typeof FlashCardSchemaValidation>;
+
 interface ModalProps {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function ModalCreateFlashCard({ modalVisible, setModalVisible }: ModalProps) {
-  const [titulo, setTitulo] = useState('');
-  const [pergunta, setPergunta] = useState('');
-  const [resposta, setResposta] = useState('');
-  const [selectedBaralhoId, setSelectedBaralhoId] = useState('');
-  const [selectedCronometro, setSelectedCronometro] = useState('Desabilitado');
-
   const realm = useRealm();
   const user = useUser();
   const baralhos = useQuery(BaralhoSchema).filtered('userId == $0', user.id);
 
-  const handleSave = () => {
-    realm.write(() => {
-      const baralho = realm.objectForPrimaryKey(BaralhoSchema, new Realm.BSON.ObjectId(selectedBaralhoId));
-      if (baralho) {
-        const novoFlashCard = {
-          name: titulo,
-          pergunta: pergunta,
-          resposta: resposta,
-          timer: selectedCronometro === 'Desabilitado' ? undefined : parseInt(selectedCronometro) * 60,
-        };
-        baralho.cards?.push(novoFlashCard as FlashCardSchema);
-      }
-    });
-    setModalVisible(false);
+  const { control, handleSubmit, setError, setValue, formState: { errors } } = useForm<FlashCardForm>({
+    resolver: zodResolver(FlashCardSchemaValidation),
+    defaultValues: {
+      titulo: '',
+      pergunta: '',
+      resposta: '',
+      selectedBaralhoId: '',
+      selectedCronometro: 'Desabilitado',
+    },
+  });
+
+  const handleSave = (data: FlashCardForm) => {
+    if (baralhos.length > 0) {
+      realm.write(() => {
+        const baralho = realm.objectForPrimaryKey(BaralhoSchema, new Realm.BSON.ObjectId(data.selectedBaralhoId));
+        if (baralho) {
+          const novoFlashCard = {
+            name: data.titulo,
+            pergunta: data.pergunta,
+            resposta: data.resposta,
+            timer: data.selectedCronometro === 'Desabilitado' ? undefined : parseInt(data.selectedCronometro) * 60,
+          };
+          baralho.cards?.push(novoFlashCard as FlashCardSchema);
+        }
+      });
+      setModalVisible(false);
+    }
   };
+
+  const noBaralhos = baralhos.length === 0;
 
   return (
     <Modal visible={modalVisible} animationType="slide" transparent={true}>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <View style={{ justifyContent: 'space-between', flexDirection: 'row', width: '100%', padding: 20, marginBottom: 10 }}>
-            <View></View>
-            <Text style={styles.title}>Criar flashcards</Text>
-            <Icon />
-          </View>
-
-          <View style={{ width: '100%', gap: 5 }}>
-            <Text style={{ color: 'white', fontSize: 18, fontFamily: 'PoppinsSemiBold' }}>Selecionar Baralho</Text>
-            <View style={styles.pickerContainer} >
-              <Picker
-                selectedValue={selectedBaralhoId}
-                style={styles.picker}
-                onValueChange={(itemValue: string) => setSelectedBaralhoId(itemValue)}
-              >
-                {baralhos.map(baralho => (
-                  <Picker.Item key={baralho._id.toString()} label={baralho.name} value={baralho._id.toString()} />
-                ))}
-              </Picker>
+      <ScrollView>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <View style={{ justifyContent: 'space-between', flexDirection: 'row', width: '100%', padding: 20, marginBottom: 10 }}>
+              <View></View>
+              <Text style={styles.title}>Criar flashcards</Text>
+              <Icon />
             </View>
-          </View>
 
-          <View style={{ width: '100%', gap: 5 }}>
-            <Text style={{ color: 'white', fontSize: 18, fontFamily: 'PoppinsSemiBold' }}>Título</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Nome do FlashCard"
-              placeholderTextColor='#dddddd'
-              value={titulo}
-              onChangeText={setTitulo}
-            />
-          </View>
-          <View style={{ width: '100%', gap: 5 }}>
-            <Text style={{ color: 'white', fontSize: 18, fontFamily: 'PoppinsSemiBold' }}>Pergunta</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite a pergunta"
-              placeholderTextColor='#dddddd'
-              value={pergunta}
-              onChangeText={setPergunta}
-            />
-          </View>
-          <View style={{ width: '100%', gap: 5 }}>
-            <Text style={{ color: 'white', fontSize: 18, fontFamily: 'PoppinsSemiBold' }}>Resposta</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Resposta"
-              placeholderTextColor='#dddddd'
-              value={resposta}
-              onChangeText={setResposta}
-            />
-          </View>
-          <View style={{ width: '100%', gap: 5 }}>
-            <Text style={{ color: 'white', fontSize: 18, fontFamily: 'PoppinsSemiBold' }}>Cronômetro</Text>
-            <View style={styles.pickerContainer} >
-              <Picker
-                selectedValue={selectedCronometro}
-                style={styles.picker}
-                onValueChange={(itemValue: string) => setSelectedCronometro(itemValue)}
-              >
-                <Picker.Item label="Desabilitado" value="Desabilitado" />
-                <Picker.Item label="1 minuto" value="1" />
-                <Picker.Item label="2 minutos" value="2" />
-                <Picker.Item label="3 minutos" value="3" />
-              </Picker>
+            <View style={{ width: '100%', gap: 5 }}>
+              <Text style={{ color: 'white', fontSize: 18, fontFamily: 'PoppinsSemiBold' }}>Selecionar Baralho</Text>
+              <View style={styles.pickerContainer} >
+                <Controller
+                  control={control}
+                  name="selectedBaralhoId"
+                  render={({ field: { onChange, value } }) => (
+                    <Picker
+                      selectedValue={value}
+                      style={styles.picker}
+                      onValueChange={onChange}
+                      enabled={!noBaralhos}
+                    >
+                      <Picker.Item label={noBaralhos ? "Nenhum baralho criado" : "Selecione um baralho"} value="" />
+                      {!noBaralhos && baralhos.map(baralho => (
+                        <Picker.Item key={baralho._id.toString()} label={baralho.name} value={baralho._id.toString()} />
+                      ))}
+                    </Picker>
+                  )}
+                />
+              </View>
             </View>
+
+            <View style={{ width: '100%', gap: 5 }}>
+              <Text style={{ color: 'white', fontSize: 18, fontFamily: 'PoppinsSemiBold' }}>Título</Text>
+              <Controller
+                control={control}
+                name="titulo"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Nome do FlashCard"
+                    placeholderTextColor='#dddddd'
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.titulo && <Text style={styles.errorText}>{errors.titulo.message}</Text>}
+            </View>
+
+            <View style={{ width: '100%', gap: 5 }}>
+              <Text style={{ color: 'white', fontSize: 18, fontFamily: 'PoppinsSemiBold' }}>Pergunta</Text>
+              <Controller
+                control={control}
+                name="pergunta"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Digite a pergunta"
+                    placeholderTextColor='#dddddd'
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.pergunta && <Text style={styles.errorText}>{errors.pergunta.message}</Text>}
+            </View>
+
+            <View style={{ width: '100%', gap: 5 }}>
+              <Text style={{ color: 'white', fontSize: 18, fontFamily: 'PoppinsSemiBold' }}>Resposta</Text>
+              <Controller
+                control={control}
+                name="resposta"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Resposta"
+                    placeholderTextColor='#dddddd'
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
+              />
+              {errors.resposta && <Text style={styles.errorText}>{errors.resposta.message}</Text>}
+            </View>
+
+            <View style={{ width: '100%', gap: 5 }}>
+              <Text style={{ color: 'white', fontSize: 18, fontFamily: 'PoppinsSemiBold' }}>Cronômetro</Text>
+              <View style={styles.pickerContainer} >
+                <Controller
+                  control={control}
+                  name="selectedCronometro"
+                  render={({ field: { onChange, value } }) => (
+                    <Picker
+                      selectedValue={value}
+                      style={styles.picker}
+                      onValueChange={onChange}
+                    >
+                      <Picker.Item label="Desabilitado" value="Desabilitado" />
+                      <Picker.Item label="1 minuto" value="1" />
+                      <Picker.Item label="2 minutos" value="2" />
+                      <Picker.Item label="3 minutos" value="3" />
+                    </Picker>
+                  )}
+                />
+              </View>
+            </View>
+
+            <TouchableOpacity
+              style={[styles.saveButton, noBaralhos && styles.disabledButton]}
+              onPress={handleSubmit(handleSave)}
+              disabled={noBaralhos}
+            >
+              <Text style={styles.saveButtonText}>Salvar</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Cancelar</Text>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.saveButtonText}>Salvar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-            <Text style={styles.closeButtonText}>Cancelar</Text>
-          </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 }
 
 export function ModalAddBaralho({ modalVisible, setModalVisible }: ModalProps) {
-
   const realm = useRealm();
   const user = useUser();
 
@@ -170,8 +240,7 @@ export function ModalAddBaralho({ modalVisible, setModalVisible }: ModalProps) {
     console.log("criado ", baralho);
     setModalVisible(false);
     reset();
-  }, [realm, user],
-  );
+  }, [realm, user]);
 
   const cancelupdate = () => {
     setModalVisible(false);
@@ -227,18 +296,16 @@ export function ModalAddBaralho({ modalVisible, setModalVisible }: ModalProps) {
   );
 }
 
-interface BaralhoProps {
-  name: string,
-}
-
 interface RenderBaralhoProps {
-  item: BaralhoProps,
-  length: number,
+  item: BaralhoSchema;
+  length: number;
 }
 
-function renderBaralho({ item, length }: RenderBaralhoProps) {
+function RenderBaralho({ item, length }: RenderBaralhoProps) {
+  const navigation = useNavigation<NavigationProp<routes>>();
+
   return (
-    <TouchableOpacity style={{ borderWidth: 1.5, borderColor: '#FFFFFF', borderRadius: 15, padding: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+    <TouchableOpacity onPress={() => navigation.navigate('RenderFlashCard', { itemID: item._id.toString() })} style={{ borderWidth: 1.5, borderColor: '#FFFFFF', borderRadius: 15, padding: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
       <Text style={{ color: 'white', fontSize: 16, fontFamily: 'PoppinsMedium' }}>{item.name}</Text>
       <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
         <Text style={{ color: '#29A5DA', fontSize: 12, fontFamily: 'PoppinsMedium' }}>{length + ' cartas'}</Text>
@@ -250,38 +317,42 @@ function renderBaralho({ item, length }: RenderBaralhoProps) {
 
 export function FlashCards() {
   const user = useUser();
-  const baralhos = useQuery<BaralhoSchema>('baralho').filtered('userId == $0', user.id);
+  const realm = useRealm();
+  const baralhos = useQuery(BaralhoSchema).filtered('userId == $0', user.id);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalFlashCardVisible, setModalFlashCardVisible] = useState(false);
 
   return (
-    <MainContainer>
-      <HeaderProfile>
-        <BackButton />
-        <HeaderText>Meus flashcards</HeaderText>
-        <Icon />
-      </HeaderProfile>
-      <FlatList
-        data={baralhos}
-        keyExtractor={(item) => item._id.toString()}
-        renderItem={({ item }) => renderBaralho({ item, length: item.cards?.length ?? 0 })}
-        contentContainerStyle={{ padding: 16 }}
-        ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
-        ListFooterComponent={
-          <View style={{ gap: 15 }}>
-            <TouchableOpacity onPress={() => setModalVisible(true)} style={{ backgroundColor: '#29A5DA', borderRadius: 15, paddingVertical: 10, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 15, marginHorizontal: 20, marginTop: 20 }}>
-              <Text style={{ fontSize: 20, color: 'white', fontFamily: 'PoppinsSemiBold' }}>Criar baralho</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setModalFlashCardVisible(true)} style={{ backgroundColor: '#29A5DA', borderRadius: 15, paddingVertical: 10, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 15, marginHorizontal: 20 }}>
-              <Text style={{ fontSize: 20, color: 'white', fontFamily: 'PoppinsSemiBold' }}>Criar flashcards</Text>
-            </TouchableOpacity>
-          </View>
-        }
-      />
-      <ModalAddBaralho modalVisible={modalVisible} setModalVisible={setModalVisible} />
-      <ModalCreateFlashCard modalVisible={modalFlashCardVisible} setModalVisible={setModalFlashCardVisible} />
-    </MainContainer>
+    <SafeAreaView style={{flex: 1}}>
+      <MainContainer>
+        <HeaderProfile>
+          <BackButton />
+          <HeaderText>Meus flashcards</HeaderText>
+          <Icon />
+        </HeaderProfile>
+        <FlatList
+          data={baralhos}
+          keyExtractor={(item) => item._id.toString()}
+          renderItem={({ item }) => <RenderBaralho item={item} length={item.cards?.length ?? 0} />}
+          contentContainerStyle={{ padding: 16, paddingBottom: 100, }}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
+          ListFooterComponent={
+            <View style={{ gap: 15 }}>
+              <TouchableOpacity onPress={() => setModalVisible(true)} style={{ backgroundColor: '#29A5DA', borderRadius: 15, paddingVertical: 10, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 15, marginHorizontal: 20, marginTop: 20 }}>
+                <Text style={{ fontSize: 20, color: 'white', fontFamily: 'PoppinsSemiBold' }}>Criar baralho</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setModalFlashCardVisible(true)} style={{ backgroundColor: '#29A5DA', borderRadius: 15, paddingVertical: 10, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 15, marginHorizontal: 20 }}>
+                <Text style={{ fontSize: 20, color: 'white', fontFamily: 'PoppinsSemiBold' }}>Criar flashcards</Text>
+              </TouchableOpacity>
+            </View>
+          }
+        />
+        <ModalAddBaralho modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        <ModalCreateFlashCard modalVisible={modalFlashCardVisible} setModalVisible={setModalFlashCardVisible} />
+      </MainContainer>
+    </SafeAreaView>
   );
 }
 
@@ -353,5 +424,13 @@ const styles = StyleSheet.create({
     color: '#29A5DA',
     fontSize: 16,
     marginTop: 10,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginTop: 5,
+  },
+  disabledButton: {
+    backgroundColor: '#6c757d', // cor cinza meio azulado
   },
 });

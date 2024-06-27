@@ -14,6 +14,7 @@ export const Container = styled.View<{ error?: boolean }>`
     gap: 5px;
 `;
 export const ChildrenContainer = styled.View<{ error?: boolean }>`
+    justify-content: space-evenly;
     flex-direction: row;
     background-color: ${({ theme }) => theme.COLORS.inputBackground};
     padding: 20px 30px;

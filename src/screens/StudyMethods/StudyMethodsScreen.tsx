@@ -2,6 +2,8 @@ import { HeaderStudyMethods, HeaderText, MainContainer, BlueText, MethodsView } 
 import Icon from '@images/icon45.svg';
 import { BackButton } from "@components/BackButton";
 import StudyMethodBox from "@components/StudyMethodsComponent";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native";
 
 const pomodoro = [
     "A Técnica Pomodoro é um método de gerenciamento de tempo desenvolvido por Francesco Cirillo no final dos anos 1980. A técnica consiste na utilização de um cronômetro para dividir o trabalho em ",
@@ -32,17 +34,21 @@ export function StudyMethods() {
 
 
     return (
-        <MainContainer>
-            <HeaderStudyMethods>
-                <BackButton />
-                <HeaderText>Métodos de estudo</HeaderText>
-                <Icon />
-            </HeaderStudyMethods>
-            <MethodsView>
-                <StudyMethodBox title="Pomodoro" content={pomodoro} />
-                <StudyMethodBox title="Revisão espaçada" content={revisao} />
-                <StudyMethodBox title="Mapa mental" content={mapa} />
-            </MethodsView>
-        </MainContainer>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#241D26' }}>
+            <ScrollView contentContainerStyle={{ paddingBottom: 100 }} >
+                <MainContainer>
+                    <HeaderStudyMethods>
+                        <BackButton />
+                        <HeaderText>Métodos de estudo</HeaderText>
+                        <Icon />
+                    </HeaderStudyMethods>
+                    <MethodsView>
+                        <StudyMethodBox title="Pomodoro" content={pomodoro} />
+                        <StudyMethodBox title="Revisão espaçada" content={revisao} />
+                        <StudyMethodBox title="Mapa mental" content={mapa} />
+                    </MethodsView>
+                </MainContainer>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
