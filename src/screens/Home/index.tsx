@@ -13,24 +13,26 @@ const { useQuery, useRealm } = realmContext;
 export function Home() {
 
     const user = useUser();
-    const userData = useQuery(UserSchema).filtered("userId == $0", user.id)
+    const userData = useQuery(UserSchema).filtered("userId == $0", user.id)[0];
 
     const navigation = useNavigation<NavigationProps>();
+
+
     return (
         <MainContainer>
             <MainHeader />
-            <TextHeader>{'Olá, '+ userData[0].name?? 'Estudante'}</TextHeader>
-            <AppCalendar />
+            <TextHeader>{'Olá, '+ userData.name ?? 'Estudante'}</TextHeader>
+            <AppCalendar questionsToday={userData} />
             <ContainerActivityView>
                 <ContainerActivityText>O que deseja fazer agora?</ContainerActivityText>
                 <ViewActitivitys>
                     <PressableContainer
-                        onPress={() => navigation.navigate('ToDoList')}
+                        onPress={() => navigation.navigate('flashCards')}
                     >
                         <ImageContainer
                             source={require('../../assets/images/atividades.png')}
                         >
-                            <TextContainer>Atividades</TextContainer>
+                            <TextContainer>FlashCards</TextContainer>
                         </ImageContainer>
                     </PressableContainer>
                     <PressableContainer onPress={() => navigation.navigate('notices')}>

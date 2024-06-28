@@ -1,4 +1,3 @@
-import Realm from 'realm';
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated, Pressable, Alert } from 'react-native';
 import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
@@ -11,10 +10,13 @@ import Icon from '@images/icon45.svg';
 import { BackButton } from "@components/BackButton";
 import { NavigationProps, routes } from "../../types/navigation";
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-type RenderFlashCardRouteProp = RouteProp<routes, 'RenderFlashCard'>;
+import Realm from 'realm';
+import { userSchema } from '@screens/Login/signISchema';
+import { UserSchema } from '@models/userSchema';
 
 const { useQuery, useRealm } = realmContext;
+
+type RenderFlashCardRouteProp = RouteProp<routes, 'RenderFlashCard'>;
 
 interface IndexedFlashCard extends FlashCardSchema {
   originalIndex: number;
@@ -28,6 +30,7 @@ export function RenderFlashCard() {
   const { itemID } = route.params;
 
   const baralho = useQuery(BaralhoSchema).filtered("_id == $0", new Realm.BSON.ObjectId(itemID))[0];
+  const userData = useQuery(UserSchema).filtered('userId == $0', user.id);
 
   const [flashcards, setFlashcards] = useState<IndexedFlashCard[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -88,6 +91,22 @@ export function RenderFlashCard() {
       setShowAnswer(!showAnswer);
       setIsFlipped(true);
     }
+  };
+
+  const handleAnswer = (isCorrect: boolean) => {
+    realm.write(() => {
+      if (isCorrect) {
+        userData[0].correctAnswers += 1;
+        console.log('acertou');
+      } else {
+        userData[0].wrongAnswers += 1;
+        console.log('errou');
+      }
+      userData[0].totalQuestions += 1;
+      console.log('adicionado, pontuação: ', userData[0].totalQuestions );
+    });
+
+    handleNextCard();
   };
 
   const handleNextCard = () => {
@@ -154,16 +173,16 @@ export function RenderFlashCard() {
         </Pressable>
         {showAnswer && (
           <View style={styles.buttonsContainer}>
-            <TouchableOpacity onPress={handleNextCard} style={styles.buttonError}>
+            <TouchableOpacity onPress={() => handleAnswer(false)} style={styles.buttonError}>
               <Text style={styles.buttonText}>Errou</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleNextCard} style={styles.button}>
+            <TouchableOpacity onPress={() => handleAnswer(true)} style={styles.button}>
               <Text style={styles.buttonText}>Acertou</Text>
             </TouchableOpacity>
           </View>
         )}
         {!showAnswer && (
-          <Text style={{fontSize: 14, fontFamily: 'PoppinsMedium', color: '#fff', textAlign: 'center'}}>Toque para virar</Text>
+          <Text style={{ fontSize: 14, fontFamily: 'PoppinsMedium', color: '#fff', textAlign: 'center' }}>Toque para virar</Text>
         )}
       </MainContainer>
     </SafeAreaView>

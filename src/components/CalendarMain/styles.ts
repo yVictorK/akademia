@@ -1,3 +1,4 @@
+import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 
 
@@ -8,6 +9,7 @@ export const CalendarView = styled.View`
     gap: 5px;
     align-items: flex-start;
     margin-top: 20px;
+    align-self: center;
 `;
 
 export const DaysView = styled.View`
@@ -20,12 +22,12 @@ export const DaysView = styled.View`
 
 export const TextCalendar = styled.Text`
     font-family: ${({ theme }) => theme.FONTS.contents};
-    font-size: ${({ theme }) => theme.FONTSIZES.medium};
+    font-size: ${RFValue(16)}px;
     color: ${({ theme }) => theme.COLORS.text_primary};
 `;
 
 export const TextDay = styled.Text`
     font-family: ${({ theme }) => theme.FONTS.contents};
-    font-size: ${({ theme }) => theme.FONTSIZES.larger};
+    font-size: ${RFValue(20)}px;
     color: ${({ theme }) => theme.COLORS.text_primary};
 `;

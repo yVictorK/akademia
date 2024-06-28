@@ -12,12 +12,12 @@ export const HeaderProfile = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 0;
 `;
 
 export const HeaderText = styled.Text`
   color: ${({ theme }) => theme.COLORS.text_primary};
   font-family: ${({ theme }) => theme.FONTS.textButtons};
   font-size: 26px;
-  max-width: 70%;
-  text-align: center;
+  text-align: left;
 `;

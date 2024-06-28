@@ -14,6 +14,7 @@ export type routes = {
   FilterYoutubeVideos: { currentTitle: string };
   notices: undefined;
   RenderFlashCard: { itemID: string };
+  flashCards: undefined;
 };
 
 export type NavigationProps = NativeStackNavigationProp<routes>;

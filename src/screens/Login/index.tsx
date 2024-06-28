@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, ScrollView } from "react-native";
+import { Alert, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,9 +30,10 @@ import {
 import EmailIcon from '@images/emailIcon.svg';
 import LockIcon from '@images/lockIcon.svg';
 import theme from '@themes/default';
+import { AuthRoutesType } from "@routes/auth.routes";
 
 export function Login() {
-  const { navigate } = useNavigation<NavigationProp<routes>>();
+  const { navigate } = useNavigation<NavigationProp<AuthRoutesType>>();
   const { logIn, result } = useEmailPasswordAuth();
   const [EmailError, setEmailError] = useState(false);
   const [loginAttempted, setLoginAttempted] = useState(false);
@@ -87,13 +88,13 @@ export function Login() {
 
   const validateLogin = async (data: user) => {
     await logIn(data);
-    setLoginAttempted(true); 
+    setLoginAttempted(true);
   };
 
 
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#241D26' }} >
+      <ScrollView  >
         <LoginContainer>
           <HeaderSingIn />
           <TextTitle>Login</TextTitle>
@@ -121,11 +122,12 @@ export function Login() {
                 <LockIcon width={20} height={20} fill={errors.password ? 'red' : theme.COLORS.text_primary} />
               </ControllerTextInput>
             </InputContainerView>
-            <TextForgotPassword>Esqueceu a senha? Clique aqui</TextForgotPassword>
+            <TouchableOpacity onPress={() => navigate('forgotpassword')} >
+              <TextForgotPassword>Esqueceu a senha? Clique aqui</TextForgotPassword>
+            </TouchableOpacity>
           </InputContainer>
           <ButtonsContainer>
-            <GoogleLogin />
-            <TextBetweenButtons>ou</TextBetweenButtons>
+
             <ButtonAction onPress={handleSubmit(validateLogin)}>
               <TextButtonAction>Entrar</TextButtonAction>
             </ButtonAction>

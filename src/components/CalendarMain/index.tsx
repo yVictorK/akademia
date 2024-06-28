@@ -1,8 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 import { CalendarView, DaysView, TextCalendar, TextDay } from './styles';
+import { UserSchema } from '@models/userSchema';
 
-const Calendar = () => {
+interface CalendarProps {
+  questionsToday: UserSchema;
+}
+
+const Calendar = ({ questionsToday }: CalendarProps) => {
   const currentDate = new Date();
   const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
@@ -14,7 +19,7 @@ const Calendar = () => {
 
   return (
     <CalendarView>
-      <TextCalendar style={{marginLeft: 5}}>Você fez 0 questões hoje!</TextCalendar>
+      <TextCalendar style={{marginLeft: 5}}>Você fez {questionsToday.totalQuestions} flashcards hoje!</TextCalendar>
       <DaysView>
         {dates.map((date, index) => {
           const day = daysOfWeek[date.getDay()];

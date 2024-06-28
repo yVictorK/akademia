@@ -77,12 +77,7 @@ export function TabRoutes() {
         name="flashCards"
         component={FlashCards}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <>
-              {focused && <View style={{ height: 3, backgroundColor: theme.COLORS.primary, width: 24, position: 'absolute', top: 10, borderRadius: 5, }} />}
-              {focused ? <Cards size={30} color="#29A5DA" /> : <Cards size={30} color="white" />}
-            </>
-          ),
+          tabBarButton: () => null,
         }}
       />
 

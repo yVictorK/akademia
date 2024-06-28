@@ -347,7 +347,6 @@ function RenderBaralho({ item, length }: RenderBaralhoProps) {
         <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
           <Text style={{ color: '#29A5DA', fontSize: 12, fontFamily: 'PoppinsMedium' }}>{length + ' cartas'}</Text>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Gear color='white' />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

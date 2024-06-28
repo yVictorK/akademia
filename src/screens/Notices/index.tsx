@@ -81,12 +81,10 @@ export function Notices() {
               source={{ uri: selectedLink }}
               style={{ flex: 1 }}
               startInLoadingState={true}
+              accessibilityViewIsModal
               renderError={() => (
                 <View style={styles.errorContainer}>
                   <Text style={styles.errorText}>Erro ao carregar o conteúdo.</Text>
-                  <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                    <Text style={styles.closeButtonText}>Fechar</Text>
-                  </TouchableOpacity>
                 </View>
               )}
             />
@@ -108,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'red',
     marginBottom: 20,
-  },
+  },  
   closeButton: {
     padding: 10,
     borderRadius: 10,

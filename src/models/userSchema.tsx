@@ -5,6 +5,9 @@ export class UserSchema extends Realm.Object<UserSchema> {
   name!: string;
   userId!: string;
   imageProfile!: string;
+  correctAnswers!: number;
+  wrongAnswers!: number;
+  totalQuestions!: number;
 
   static schema: Realm.ObjectSchema = {
     name: 'user',
@@ -14,6 +17,9 @@ export class UserSchema extends Realm.Object<UserSchema> {
       name: 'string',
       userId: 'string',
       imageProfile: 'string',
+      correctAnswers: { type: 'int', default: 0 },
+      wrongAnswers: { type: 'int', default: 0 },
+      totalQuestions: { type: 'int', default: 0 },
     },
   };
 }
