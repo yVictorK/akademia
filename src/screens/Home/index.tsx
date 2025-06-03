@@ -1,14 +1,65 @@
-import { Logo } from "../../components/Logo";
-import { WelcomeContainer } from "../../components/WelcomeContainer";
-import { HomeContainer } from "./styles";
+import { MainContainer, PressableContainer, TextContainer, TextHeader, ViewActitivitys, ImageContainer, ContainerActivityView, ContainerActivityText } from "./styles";
+import { MainHeader } from "@components/MainHeader";
+import AppCalendar from "@components/CalendarMain";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProps } from "../../types/navigation";
+import { useWindowDimensions } from "react-native";
+import { realmContext } from "@models/RealmContext";
+import { UserSchema } from "@models/userSchema";
+import { useUser } from "@realm/react";
 
-const image = require('../../assets/images/backgroundHomeImage.png');
+const { useQuery, useRealm } = realmContext;
 
 export function Home() {
+
+    const user = useUser();
+    const userData = useQuery(UserSchema).filtered("userId == $0", user.id)[0];
+
+    const navigation = useNavigation<NavigationProps>();
+
+
     return (
-        <HomeContainer source={image}>
-            <Logo />
-            <WelcomeContainer />
-        </HomeContainer>
+        <MainContainer>
+            <MainHeader />
+            <TextHeader>{'Olá, '+ userData.name ?? 'Estudante'}</TextHeader>
+            <AppCalendar questionsToday={userData} />
+            <ContainerActivityView>
+                <ContainerActivityText>O que deseja fazer agora?</ContainerActivityText>
+                <ViewActitivitys>
+                    <PressableContainer
+                        onPress={() => navigation.navigate('flashCards')}
+                    >
+                        <ImageContainer
+                            source={require('../../assets/images/atividades.png')}
+                        >
+                            <TextContainer>FlashCards</TextContainer>
+                        </ImageContainer>
+                    </PressableContainer>
+                    <PressableContainer onPress={() => navigation.navigate('notices')}>
+                        <ImageContainer
+                            source={require('../../assets/images/editais.png')}
+                        >
+                            <TextContainer>Editais</TextContainer>
+                        </ImageContainer>
+                    </PressableContainer>
+                    <PressableContainer
+                        onPress={() => navigation.navigate('YoutubeScreen')}
+                    >
+                        <ImageContainer
+                            source={require('../../assets/images/aulas.png')}
+                        >
+                            <TextContainer>Aulas</TextContainer>
+                        </ImageContainer>
+                    </PressableContainer>
+                    <PressableContainer onPress={() => navigation.navigate('StudyMethods')}>
+                        <ImageContainer
+                            source={require('../../assets/images/metodos.png')}
+                        >
+                            <TextContainer>Métodos</TextContainer>
+                        </ImageContainer>
+                    </PressableContainer>
+                </ViewActitivitys>
+            </ContainerActivityView>
+        </MainContainer>
     );
 }

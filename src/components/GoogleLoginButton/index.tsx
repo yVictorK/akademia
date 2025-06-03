@@ -1,6 +1,6 @@
 import { GoogleButtonContainer, GoogleButtonText } from "./styles";
-import ArrowRight from '../../assets/images/arrowRight.svg'
-import GoogleIcon from '../../assets/images/logoGoogle.svg'
+import ArrowRight from '@images/arrowRight.svg'
+import GoogleIcon from '@images/logoGoogle.svg'
 
 export function GoogleLogin(){
     return(

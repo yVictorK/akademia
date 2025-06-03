@@ -2,6 +2,7 @@
   "expo": {
     "name": "akademia",
     "slug": "akademia",
+    "scheme": "akademia",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,16 +24,13 @@
       "compileSdk": "33",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#241d24"
+        "backgroundColor": "#241D26"
       },
       "package": "com.akademia"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"
-    ],
     "extra": {
       "eas": {
         "projectId": "98636026-a453-4b3f-8437-1f2ac785e1a9"

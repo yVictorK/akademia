@@ -2,8 +2,9 @@ import styled from "styled-components/native";
 
 export const HomeButton = styled.TouchableOpacity`
     background-color: ${({ theme }) => theme.COLORS.text_primary};
-    padding: 10px 0px;
-    width: 170px;
+    max-width: 300px;
+    width: 160px;
+    padding: 10px 20px;
     border-radius: 25px;
     justify-content: center;
     align-items: center;
