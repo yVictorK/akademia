@@ -24,7 +24,7 @@
       "compileSdk": "33",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#241d24"
+        "backgroundColor": "#241D26"
       },
       "package": "com.akademia"
     },

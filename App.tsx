@@ -29,8 +29,6 @@ export default function App() {
   if (!loaded) {
     return null;
   }
-
-
   return (
     <ThemeProvider theme={primaryTheme}>
       <AppProvider id='bd_akademia-xsxws'>

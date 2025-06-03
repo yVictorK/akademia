@@ -1,7 +1,11 @@
 import axios from 'axios';
 
-const API_KEY = 'AIzaSyC3_8VQVFFzgVSwTO56-4-3aGELEldqlOc';
+const API_KEY = process.env.API_KEY_YOUTUBE;
 const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
+
+if (!API_KEY) {
+    throw new Error('API_KEY_YOUTUBE não está definida');
+}
 
 export interface YouTubeVideo {
     id: {
@@ -31,7 +35,7 @@ interface YouTubeApiParams {
     videoDuration?: 'short' | 'medium' | 'long' | string;
 }
 
-export const fetchYouTubeVideos = async (searchQuery: string, duration?: 'any' |'short' | 'medium' | 'long' ): Promise<YouTubeVideo[]> => {
+export const fetchYouTubeVideos = async (searchQuery: string, duration?: 'any' | 'short' | 'medium' | 'long'): Promise<YouTubeVideo[]> => {
     try {
         const params: YouTubeApiParams = {
             part: 'snippet',
@@ -40,9 +44,9 @@ export const fetchYouTubeVideos = async (searchQuery: string, duration?: 'any' |
             q: searchQuery,
             type: 'video'
         };
-        
+
         if (duration) {
-            params.videoDuration = duration; 
+            params.videoDuration = duration;
         }
 
         const response = await axios.get<YouTubeApiResponse>(BASE_URL, { params });
