@@ -26,7 +26,7 @@ Example:
 
 Students preparing for Brazilian entrance exams often rely on multiple tools to organize their studies, review concepts, and access learning resources.
 
-AkadÊmia was created to centralize these tools into a single mobile application that supports:
+Akadêmia was created to centralize these tools into a single mobile application that supports:
 
 - structured study planning
 - active recall through flashcards
